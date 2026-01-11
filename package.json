@@ -54,6 +54,9 @@
     "email": "jonasmzsouza@gmail.com"
   },
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jonasmzsouza/param-tracker/issues"
+  },
   "devDependencies": {
     "esbuild": "^0.25.11",
     "eslint": "9.38.0",
