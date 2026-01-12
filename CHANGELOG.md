@@ -1,14 +1,15 @@
-## [3.0.2](https://github.com/jonasmzsouza/param-tracker/compare/3.0.1...3.0.2) (2025-11-10)
-
-
-### Reverts
-
-* Revert ":robot: ci: add automated release and npm token rotation workflows ([#14](https://github.com/jonasmzsouza/param-tracker/issues/14))" ([#15](https://github.com/jonasmzsouza/param-tracker/issues/15)) ([ba3acb3](https://github.com/jonasmzsouza/param-tracker/commit/ba3acb321faa647384aec65710ce8c85b87a9901))
-
 # 📜 CHANGELOG
 
 All notable changes to this project will be documented in this file.  
 The format follows the conventions of Conventional Commits(https://www.conventionalcommits.org) and semantic versioning (SemVer).
+
+---
+
+## ⏪ 3.0.2
+
+### ⏪ Reverts
+
+- Revert ":robot: ci: add automated release and npm token rotation workflows ([#14](https://github.com/jonasmzsouza/param-tracker/issues/14))" ([#15](https://github.com/jonasmzsouza/param-tracker/issues/15)) ([ba3acb3](https://github.com/jonasmzsouza/param-tracker/commit/ba3acb321faa647384aec65710ce8c85b87a9901))
 
 ---
 
