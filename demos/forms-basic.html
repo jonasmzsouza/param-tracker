@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ParamTracker Demo — Forms Basic</title>
+  </head>
+  <body>
+    <h1>Basic Form Demo</h1>
+    <p>Visit with <code>?utm_source=tracker&utm_medium=demo</code> and submit the form.</p>
+
+    <form id="leadForm">
+      <input type="text" name="name" placeholder="Name" />
+      <input type="email" name="email" placeholder="Email" />
+      <button type="submit">Submit</button>
+    </form>
+
+    <script src="../dist/tracker.js"></script>
+    <script>
+      const tracker = new ParamTracker({
+        form: { acceptFormIds: ["leadForm"] }
+      });
+
+      document.getElementById("leadForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        alert(
+          "Form submitted with params:\n" + new URLSearchParams(new FormData(e.target)).toString()
+        );
+      });
+    </script>
+
+    <!-- Helpers -->
+    <div
+      style="margin-top: 1rem; background: #fffbe6; padding: 1rem; border-left: 4px solid #f5c518"
+    >
+      💡 <strong>Note:</strong> This demo shows how ParamTracker automatically appends UTM
+      parameters (and other custom ones) to accepted forms before submission. The resulting form
+      data will include tracking parameters when submitted.
+    </div>
+
+    <hr />
+    <div><em>Current URL parameters: </em><span id="params"></span></div>
+    <hr />
+
+    <script>
+      document.getElementById("params").textContent = window.location.search
+        ? window.location.search
+        : "None";
+    </script>
+  </body>
+</html>

@@ -118,25 +118,23 @@ const tracker = new ParamTracker({
 
 ## ⚡ Quick Start
 
-A quick example of using **ParamTracker** on a website with links and forms.
+A simple example of how to use **ParamTracker** on a website with links and forms.
 
----
+For more practical examples, including advanced use cases with all configuration options, check out the [`/demos`](./demos) folder — it contains multiple `.html` files demonstrating different tracking scenarios.
 
-### 1. HTML Example
+### Basic Example
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>ParamTracker Demo</title>
+    <title>ParamTracker Quick Start</title>
   </head>
   <body>
     <!-- Example Links -->
-    <a href="https://mydomain.com/page1?utm_source=google&utm_medium=cpc">Page 1</a>
-    <a href="https://mydomain.com/page2">Page 2</a>
-    <a href="https://mydomain.com/admin/page1">Admin Page 1</a>
-    <a href="https://anotherdomain.com/page1">Page from another domain</a>
+    <a href="https://example.com/page1?utm_source=google&utm_medium=cpc">Page 1</a>
+    <a href="https://example.com/page2">Page 2</a>
 
     <!-- Example Form -->
     <form id="registrationForm">
@@ -147,19 +145,13 @@ A quick example of using **ParamTracker** on a website with links and forms.
 
     <script src="https://cdn.jsdelivr.net/npm/param-tracker@latest/dist/tracker.min.js"></script>
     <script>
-      // Initialize tracker with configuration
+      // Initialize ParamTracker with configuration
       const tracker = new ParamTracker({
         form: {
           acceptFormIds: ["registrationForm"]
         },
         link: {
-          acceptOrigins: ["mydomain.com", "anotherdomain.com"],
-          ignoreClasses: ["no-track", "load-more", "page-numbers", "filter-button"],
-          ignorePathnames: ["/admin"],
-          ignoreAttrValues: ["button", "dropdown", "tab", "modal"],
-          manageAttributes: ["role", "data-custom"],
-          includeParams: ["custom_param"],
-          excludeParams: ["s", "type", "category"]
+          acceptOrigins: ["example.com"]
         }
       });
     </script>
@@ -167,15 +159,33 @@ A quick example of using **ParamTracker** on a website with links and forms.
 </html>
 ```
 
-### 2. Example Output
-
-- Clicking `<a href="https://example.com/page2">` with `?utm_source=google` on the current page will navigate to:
+When you click a link like:
 
 ```bash
-https://example.com/page2?utm_source=google
+https://example.com/page2
 ```
 
-- Submitting the form will automatically create hidden input fields in the form with UTM parameters and custom parameters before your POST request.
+while the current page contains UTM parameters such as ?utm_source=tracker,
+ParamTracker will automatically append them to the target URL:
+
+```bash
+https://example.com/page2?utm_source=tracker
+```
+
+And when you submit a form with an accepted ID, the library automatically injects hidden inputs containing the same UTM parameters (and any additional parameters defined in the configuration).
+
+### 🔍 Learn More with Demos
+
+The [`/demos`](./demos) directory includes multiple examples to help you understand how each configuration option behaves, such as:
+
+- Ignoring specific pathnames (ignorePathnames)
+- Ignoring links by class (ignoreClasses)
+- Ignoring attributes by value (ignoreAttrValues)
+- Managing extra attributes (manageAttributes)
+- Handling includeParams and excludeParams in links and forms
+- Demonstrating form behavior using event.preventDefault() to show how UTMs and custom parameters are injected before submission.
+
+These demos illustrate how ParamTracker keeps, merges, or ignores parameters based on your configuration — ensuring consistent tracking even when users navigate across different domains or pages.
 
 ---
 
@@ -269,8 +279,8 @@ These options work **together** to ignore links containing specific values in ce
 
 ```js
 link: {
-  manageAttributes: ["role", "data-custom"]
-  ignoreAttrValues: ["button", "dropdown", "tab", "modal"]
+  manageAttributes: ["role", "data-custom"];
+  ignoreAttrValues: ["button", "dropdown", "tab", "modal"];
 }
 ```
 
@@ -287,6 +297,7 @@ link: {
   includeParams: ["custom_param"],
 }
 ```
+
 - Note: UTMS parameters are already included by default.
 
 ---

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ParamTracker Demo — Ignored Links</title>
+  </head>
+  <body>
+    <h1>Ignored Links Demo</h1>
+    <p>Visit with <code>?utm_source=tracker&utm_medium=demo</code></p>
+
+    <a href="pages/page1.html">Tracked Link</a><br />
+    <a href="admin/" class="admin">Ignored Pathname</a><br />
+    <a href="mailto:test@example.com">Ignored Protocol (default)</a><br />
+    <a href="url:test@example.com">Ignored Protocol (custom)</a><br />
+    <a href="pages/page3.html" class="no-track">Ignored Class</a><br />
+    <span
+      >Accepted Origin [<a href="https://example.com" class="no-track">example.com</a>], but Ignored
+      Class</span
+    ><br />
+    <a href="assets/a-sample-pdf-file.pdf"  target="_blank" rel="noopener noreferrer">Ignored File</a><br />
+
+    <script src="../dist/tracker.js"></script>
+    <script>
+      const tracker = new ParamTracker({
+        link: {
+          acceptOrigins: ["example.com"],
+          ignoreClasses: ["no-track"],
+          ignorePathnames: ["/admin/"],
+          ignoreProtocols: ["url:"]
+        }
+      });
+    </script>
+
+    <!-- Helpers -->
+    <div
+      style="margin-top: 1rem; background: #fffbe6; padding: 1rem; border-left: 4px solid #f5c518"
+    >
+      💡 <strong>Note:</strong> This demo illustrates how <strong>ParamTracker</strong> ignores
+      specific links according to configuration rules:
+      <ul style="margin-top: 0.5rem">
+        <li>
+          🔗 <code>ignorePathnames</code> — skips links that contain restricted pathnames such as
+          <code>/admin/</code>.
+        </li>
+        <li>
+          🚫 <code>ignoreClasses</code> — ignores links with classes like <code>no-track</code>.
+        </li>
+        <li>
+          📧 <code>ignoreProtocols</code> — excludes links using certain protocols
+          (<code>mailto:</code>, <code>tel:</code>, <code>url:</code>, etc.).
+        </li>
+        <li>
+          🌐 <code>acceptOrigins</code> — allows propagation only for links whose domains match
+          those listed here <em>or</em> the current page's hostname (automatically included by
+          default).
+        </li>
+        <li>
+          📄 Extra: <code>isFileUrl</code> — is an internal function that checks if the link is a file based on whether it ends with an extension, thus preventing parameters from being propagated.
+        </li>
+      </ul>
+      This ensures only relevant, trackable links propagate UTM and custom parameters.
+    </div>
+
+    <hr />
+    <div><em>Current URL parameters: </em><span id="params"></span></div>
+    <hr />
+
+    <script>
+      document.getElementById("params").textContent = window.location.search
+        ? window.location.search
+        : "None";
+    </script>
+  </body>
+</html>
