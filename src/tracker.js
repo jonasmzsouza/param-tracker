@@ -314,20 +314,32 @@ class ParamTracker {
    * @param {String} origin 
    * @returns {bool}
    */
-  isAcceptedOrigin = (origin) => {
-    try {
-      const normalizedOrigin = origin.startsWith("http") ? origin : `https://${origin}`;
-      const { hostname } = new URL(normalizedOrigin);
-      return this.config.link.acceptOrigins.some((baseDomain) => {
-        const cleanDomain = baseDomain.trim().toLowerCase();
-        return (
-          hostname === cleanDomain || hostname.endsWith(`.${cleanDomain}`)
+  isAcceptedOrigin = (() => {
+    const cache = new Map();
+
+    return function (origin) {
+      if (cache.has(origin)) return cache.get(origin);
+
+      try {
+        const normalizedOrigin = origin.startsWith("http")
+          ? origin
+          : `https://${origin}`;
+        const { hostname } = new URL(normalizedOrigin);
+        const allowedDomains = this.config?.link?.acceptOrigins ?? [];
+
+        const isAccepted = allowedDomains.some(
+          (baseDomain) =>
+            hostname === baseDomain || hostname.endsWith(`.${baseDomain}`)
         );
-      });
-    } catch {
-      return false;
-    }
-  };
+
+        cache.set(origin, isAccepted);
+        return isAccepted;
+      } catch {
+        cache.set(origin, false);
+        return false;
+      }
+    };
+  })();
 
   /**
    * Handle clicks on links.
