@@ -69,6 +69,6 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "globals": "^17.0.0",
-    "release-suite": "^1.0.1"
+    "release-suite": "^3.0.0"
   }
 }
