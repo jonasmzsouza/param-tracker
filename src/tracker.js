@@ -8,7 +8,7 @@
  * 
  * https://github.com/jonasmzsouza/param-tracker
  *
- * Copyright (c) 2023 Jonas Souza
+ * Copyright (c) 2023-2026 Jonas Souza
  * Released under the MIT license
  * 
  */
@@ -145,6 +145,19 @@ class ParamTracker {
   };
 
   /**
+   * Sanitizes and validates domain names.
+   * @param {Array<string>} domains 
+   * @returns {Array<string>}
+  */
+  sanitizeDomains = (domains = []) => {
+    const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)*[a-z]{2,}$/i;
+    return domains
+      .filter(d => typeof d === "string" && d.trim() !== "")
+      .map(d => d.trim().toLowerCase())
+      .filter(d => domainRegex.test(d));
+  }
+
+  /**
    * Merges two arrays safely, removing invalid entries and duplicates.
    * Delegates normalization rules to `sanitizeStringArray`.
    * 
@@ -176,7 +189,7 @@ class ParamTracker {
       ? customConfig.link
       : {};
 
-    return {
+    const merged = {
       form: {
         acceptFormIds: this.mergeUnique(defaults.form?.acceptFormIds, safeCustomForm.acceptFormIds),
       },
@@ -191,6 +204,11 @@ class ParamTracker {
         excludeParams: this.mergeUnique(defaults.link?.excludeParams, safeCustomLink.excludeParams, { lowercase: true }),
       },
     };
+
+    // Sanitizes and normalizes acceptOrigins
+    merged.link.acceptOrigins = this.sanitizeDomains(merged.link.acceptOrigins);
+
+    return merged;
   };
 
   /**
@@ -342,7 +360,6 @@ class ParamTracker {
   /**
    * Performs a safe merge between the current page and link parameters,
    * preserving page UTMs when they exist and normalizing malformed queries.
-   *
    * @param {string} baseUrl - e.g., ‘https://domain.com/page’
    * @param {string} rawLinkQuery - e.g., linkUrl.search (may be malformed)
    * @param {string} rawCurrentQuery - e.g.: window.location.search
