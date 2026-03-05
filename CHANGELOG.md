@@ -5,6 +5,14 @@ The format follows the conventions of Conventional Commits(https://www.conventio
 
 ---
 
+## 3.1.1
+
+### 🐛 Fixes
+- Add conditional in the tag create step in the workflow (#23)
+
+### 📚 Documentation
+- Update the README.md file in the demos folder (#22)
+
 ## 3.1.0
 
 ### ✨ Features

@@ -1,4 +1,4 @@
-/*! ParamTracker 3.1.0 | MIT License | (c) Jonas Souza 2025 | https://github.com/jonasmzsouza/param-tracker */
+/*! ParamTracker 3.1.1 | MIT License | (c) Jonas Souza 2025 | https://github.com/jonasmzsouza/param-tracker */
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
