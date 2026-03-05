@@ -18,19 +18,16 @@ concurrency:
 
 jobs:
   # ------------------------------------------------------------
-  # JOB 1 — CREATE RELEASE PR + TAG DECISION
+  # JOB 1 — CREATE RELEASE PR + MERGE + TAG
   # ------------------------------------------------------------
   create:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     # Job-level outputs = contract with publish job
     outputs:
-      should_publish: ${{ steps.compute.outputs.should_publish }}
-      version: ${{ steps.compute.outputs.version }}
-      tagPrefix: ${{ steps.compute.outputs.tagPrefix }}
       tag: ${{ steps.tag.outputs.tag }}
 
     # Only run when:
@@ -57,9 +54,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Install release-suite (self)
-        run: npm install .
 
       # --------------------------------------------------------
       # Decide if a release should happen
@@ -149,45 +143,44 @@ jobs:
           fi
 
       # --------------------------------------------------------
-      # Validate merge (soft)
+      # ⏳ WAIT FOR MERGE (CRITICAL)
       # --------------------------------------------------------
-      - name: Validate release commit
-        id: validate
+      - name: Wait for Release PR to be merged
+        if: steps.pr.outputs.pull-request-number != ''
         run: |
-          git fetch origin main --depth=1
+          PR=${{ steps.pr.outputs.pull-request-number }}
+
+          echo "Waiting for PR #$PR to be merged..."
+          for i in {1..60}; do
+            MERGED_AT=$(gh pr view "$PR" --json mergedAt -q .mergedAt)
+            if [ "$MERGED_AT" != "null" ] && [ -n "$MERGED_AT" ]; then
+              echo "PR merged at $MERGED_AT"
+              exit 0
+            fi
+            sleep 5
+          done
+
+          echo "Timed out waiting for PR merge"
+          exit 1
+
+      # --------------------------------------------------------
+      # Create Git tag
+      # --------------------------------------------------------
+      - name: Create tag
+        id: tag
+        run: |
+          git fetch origin main
           git checkout main
           git reset --hard origin/main
 
-          if git log -1 --pretty=%s | grep -q "^:bricks: chore(release):"; then
-            echo "ok=true" >> $GITHUB_OUTPUT
-          else
-            echo "ok=false" >> $GITHUB_OUTPUT
-          fi
-
-      # --------------------------------------------------------
-      # Create Git tag (soft)
-      # --------------------------------------------------------
-      - name: Configure Git identity (for tags)
-        run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Create tag
-        id: tag
-        if: steps.validate.outputs.ok == 'true'
-        run: |
-          set +e
           RESULT=$(npx rs-tag create)
-          STATUS=$?
-          TAG=$(echo "$RESULT" | jq -r '.tag // empty')
+          TAG=$(echo "$RESULT" | jq -r '.tag')
 
           echo "$RESULT"
-
-          if [ "$STATUS" -eq 0 ] && [ -n "$TAG" ]; then
-            echo "tag=$TAG" >> $GITHUB_OUTPUT
-          else
-            echo "Tag not created (soft-fail)"
-          fi
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
 
   # ------------------------------------------------------------
   # JOB 2 — PUBLISH (only if tag exists)
@@ -196,15 +189,17 @@ jobs:
     needs: create
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     if: needs.create.outputs.tag != ''
 
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
-      - name: Checkout
+      - name: Checkout tag
         uses: actions/checkout@v4
         with:
+          ref: ${{ needs.create.outputs.tag }}
           fetch-depth: 0
           persist-credentials: true
 
@@ -218,13 +213,37 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install release-suite (self)
-        run: npm install .
+      # --------------------------------------------------------
+      # Assert tag matches package.json
+      # --------------------------------------------------------
+      - name: Assert tag matches package.json
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          TAG=${{ needs.create.outputs.tag }}
+
+          if [ "$VERSION" != "$TAG" ]; then
+            echo "Version mismatch!"
+            exit 1
+          fi
+
+      # --------------------------------------------------------
+      # Guard: version already published?
+      # --------------------------------------------------------
+      - name: Guard against duplicate publish
+        id: guard
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if npm view "$(node -p "require('./package.json').name")@$VERSION" version >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
 
       # --------------------------------------------------------
       # Publish to npm using Trusted Publishing (OIDC)
       # --------------------------------------------------------
       - name: Publish to npm (Trusted Publishing)
+        if: steps.guard.outputs.exists != 'true'
         run: npm publish
 
       # --------------------------------------------------------
