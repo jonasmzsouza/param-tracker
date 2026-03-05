@@ -1,4 +1,4 @@
-/*! ParamTracker 3.1.0 | MIT License | (c) Jonas Souza 2025 | https://github.com/jonasmzsouza/param-tracker */
+/*! ParamTracker 3.1.1 | MIT License | (c) Jonas Souza 2025 | https://github.com/jonasmzsouza/param-tracker */
 (() => {
   // src/tracker.js
   var ParamTracker = class {
