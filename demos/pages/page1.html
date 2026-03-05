@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ParamTracker Demo - Page 1</title>
+  </head>
+  <body>
+    <h1>ParamTracker Demo - Page 1</h1>
+    <p>
+      This is <strong>Page 1</strong>. If you arrived here with tracking parameters (like
+      <code>?utm_source</code> or <code>?utm_medium</code>), you should see them preserved when
+      navigating to Page 2.
+    </p>
+
+    <a href="page2.html" target="_blank" rel="noopener noreferrer">Go to Page 2 (new tab)</a>
+    <br />
+    <a href="page2.html">Go to Page 2 (same tab)</a>
+
+    <script src="../../dist/tracker.js"></script>
+    <script>
+      const tracker = new ParamTracker({});
+    </script>
+
+    <!-- Helpers -->
+    <hr />
+    <div><em>Current URL parameters: </em><span id="params"></span></div>
+    <hr />
+
+    <button onclick="goBack()">← Back to Previous Page</button>
+
+    <script>
+      document.getElementById("params").textContent = window.location.search
+        ? window.location.search
+        : "None";
+      function goBack() {
+        if (window.history.length > 1) {
+          window.history.back();
+        } else {
+          window.location.href = "/demos";
+        }
+      }
+    </script>
+  </body>
+</html>

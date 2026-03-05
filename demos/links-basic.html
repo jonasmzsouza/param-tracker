@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ParamTracker Demo — Basic</title>
+  </head>
+  <body>
+    <h1>Basic Links Demo</h1>
+    <p>
+      Visit this page with <code>?utm_source=tracker&utm_medium=demo</code> and click the links
+      below:
+    </p>
+
+    <a href="pages/page1.html">Page 1</a><br />
+    <a href="pages/page2.html" target="_blank" rel="noopener noreferrer">Page 2</a><br />
+    <a href="https://example.com/" target="_blank" rel="noopener noreferrer"
+      >Accepted Origin (custom)</a
+    >
+
+    <script src="../dist/tracker.js"></script>
+    <script>
+      const tracker = new ParamTracker({
+        link: { acceptOrigins: ["example.com"] }
+      });
+    </script>
+
+    <!-- Helpers -->
+    <div
+      style="margin-top: 1rem; background: #fffbe6; padding: 1rem; border-left: 4px solid #f5c518"
+    >
+      💡 <strong>Note:</strong> This demo shows how ParamTracker automatically propagates UTM
+      parameters across basic links.
+    </div>
+
+    <hr />
+    <div><em>Current URL parameters: </em><span id="params"></span></div>
+    <hr />
+
+    <script>
+      document.getElementById("params").textContent = window.location.search
+        ? window.location.search
+        : "None";
+    </script>
+  </body>
+</html>

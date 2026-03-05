@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ParamTracker Demo — Advanced Forms</title>
+  </head>
+  <body>
+    <h1>Advanced Form Demo - Custom Parameters</h1>
+    <p>Visit with <code>?utm_source=tracker&utm_medium=demo&temp=123&ref=999&promo=today</code></p>
+
+    <form id="signupForm">
+      <input type="text" name="name" placeholder="Full Name" />
+      <input type="email" name="email" placeholder="Email" />
+      <button type="submit">Sign Up</button>
+    </form>
+
+    <script src="../dist/tracker.js"></script>
+    <script>
+      const tracker = new ParamTracker({
+        form: { acceptFormIds: ["signupForm"] },
+        link: {
+          includeParams: ["ref", "promo"],
+          excludeParams: ["temp"]
+        }
+      });
+
+      document.getElementById("signupForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const params = new URLSearchParams(new FormData(e.target));
+        alert("Params included in form:\n" + params.toString());
+      });
+    </script>
+
+    <!-- Helpers -->
+    <div
+      style="margin-top: 1rem; background: #fffbe6; padding: 1rem; border-left: 4px solid #f5c518"
+    >
+      💡 <strong>Note:</strong> This demo shows automatic propagation of UTM and custom parameters
+      into form submissions. Parameters listed in <code>excludeParams</code> are skipped.
+    </div>
+
+    <hr />
+    <div><em>Current URL parameters: </em><span id="params"></span></div>
+    <hr />
+
+    <script>
+      document.getElementById("params").textContent = window.location.search
+        ? window.location.search
+        : "None";
+    </script>
+  </body>
+</html>

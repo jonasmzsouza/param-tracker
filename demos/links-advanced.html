@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ParamTracker Demo — Advanced Links Demo</title>
+  </head>
+  <body>
+    <h1>Advanced Links Demo - Custom Parameters</h1>
+    <p>Visit with <code>?utm_source=tracker&utm_medium=demo&temp=123&ref=999&promo=today</code></p>
+
+    <a href="pages/page1.html">Page 1</a><br /><br />
+
+    <spam>Combined (URL + link itself)</spam><br />
+
+    <a href="pages/page1.html?custom=example" target="_blank" rel="noopener noreferrer"
+      >Link with its own parameter
+    </a>
+
+    <script src="../dist/tracker.js"></script>
+    <script>
+      const tracker = new ParamTracker({
+        link: {
+          includeParams: ["ref", "promo"],
+          excludeParams: ["temp"]
+        }
+      });
+    </script>
+
+    <!-- Helpers -->
+    <br /><br />
+
+    <div
+      style="margin-top: 1rem; background: #fffbe6; padding: 1rem; border-left: 4px solid #f5c518"
+    >
+      💡 <strong>Note:</strong><br />
+      - When accessed with the URL above, only <code>ref</code> and <code>promo</code> will be kept
+      (since <code>temp</code> is excluded).<br />
+      - The link that already includes <code>?custom=example</code> will merge both sets of
+      parameters. <br />
+      - If you open this page <strong>without parameters</strong>, the tracker will propagate only
+      the link’s own parameters (none from the location).
+    </div>
+
+    <hr />
+    <div><em>Current URL parameters: </em><span id="params"></span></div>
+    <hr />
+
+    <script>
+      document.getElementById("params").textContent = window.location.search
+        ? window.location.search
+        : "None";
+    </script>
+  </body>
+</html>

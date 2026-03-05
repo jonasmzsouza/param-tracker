@@ -8,7 +8,7 @@
  * 
  * https://github.com/jonasmzsouza/param-tracker
  *
- * Copyright (c) 2023 Jonas Souza
+ * Copyright (c) 2023-2026 Jonas Souza
  * Released under the MIT license
  * 
  */
@@ -115,6 +115,7 @@ class ParamTracker {
     this.sanitizeLinks();
     this.bindLinkEvents();
     this.bindButtonEvents();
+    this.bindContextMenuEvents();
     this.restoreScrollHash();
   };
 
@@ -143,6 +144,19 @@ class ParamTracker {
 
     return [...new Set(normalized)];
   };
+
+  /**
+   * Sanitizes and validates domain names.
+   * @param {Array<string>} domains 
+   * @returns {Array<string>}
+  */
+  sanitizeDomains = (domains = []) => {
+    const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)*[a-z]{2,}$/i;
+    return domains
+      .filter(d => typeof d === "string" && d.trim() !== "")
+      .map(d => d.trim().toLowerCase())
+      .filter(d => domainRegex.test(d));
+  }
 
   /**
    * Merges two arrays safely, removing invalid entries and duplicates.
@@ -176,7 +190,7 @@ class ParamTracker {
       ? customConfig.link
       : {};
 
-    return {
+    const merged = {
       form: {
         acceptFormIds: this.mergeUnique(defaults.form?.acceptFormIds, safeCustomForm.acceptFormIds),
       },
@@ -191,6 +205,11 @@ class ParamTracker {
         excludeParams: this.mergeUnique(defaults.link?.excludeParams, safeCustomLink.excludeParams, { lowercase: true }),
       },
     };
+
+    // Sanitizes and normalizes acceptOrigins
+    merged.link.acceptOrigins = this.sanitizeDomains(merged.link.acceptOrigins);
+
+    return merged;
   };
 
   /**
@@ -296,20 +315,32 @@ class ParamTracker {
    * @param {String} origin 
    * @returns {bool}
    */
-  isAcceptedOrigin = (origin) => {
-    try {
-      const normalizedOrigin = origin.startsWith("http") ? origin : `https://${origin}`;
-      const { hostname } = new URL(normalizedOrigin);
-      return this.config.link.acceptOrigins.some((baseDomain) => {
-        const cleanDomain = baseDomain.trim().toLowerCase();
-        return (
-          hostname === cleanDomain || hostname.endsWith(`.${cleanDomain}`)
+  isAcceptedOrigin = (() => {
+    const cache = new Map();
+
+    return function (origin) {
+      if (cache.has(origin)) return cache.get(origin);
+
+      try {
+        const normalizedOrigin = origin.startsWith("http")
+          ? origin
+          : `https://${origin}`;
+        const { hostname } = new URL(normalizedOrigin);
+        const allowedDomains = this.config?.link?.acceptOrigins ?? [];
+
+        const isAccepted = allowedDomains.some(
+          (baseDomain) =>
+            hostname === baseDomain || hostname.endsWith(`.${baseDomain}`)
         );
-      });
-    } catch {
-      return false;
-    }
-  };
+
+        cache.set(origin, isAccepted);
+        return isAccepted;
+      } catch {
+        cache.set(origin, false);
+        return false;
+      }
+    };
+  })();
 
   /**
    * Handle clicks on links.
@@ -342,7 +373,6 @@ class ParamTracker {
   /**
    * Performs a safe merge between the current page and link parameters,
    * preserving page UTMs when they exist and normalizing malformed queries.
-   *
    * @param {string} baseUrl - e.g., ‘https://domain.com/page’
    * @param {string} rawLinkQuery - e.g., linkUrl.search (may be malformed)
    * @param {string} rawCurrentQuery - e.g.: window.location.search
@@ -532,6 +562,43 @@ class ParamTracker {
 
       if (isAcceptedForm) {
         this.addParamsToForm(form);
+      }
+    });
+  };
+
+  /**
+   * Binds contextmenu (right-click) events to links.
+   * This ensures that when the user right-clicks a link and chooses
+   * “Open link in new tab/window” or “Copy link address”,
+   * the link has already been sanitized and has the propagated parameters.
+   */
+  bindContextMenuEvents = () => {
+    document.addEventListener("contextmenu", (event) => {
+      const linkElement = event.target.closest("a");
+      if (!linkElement || !this.shouldHandleLink(linkElement)) return;
+
+      try {
+        const origin = linkElement.origin;
+        const pathname = linkElement.pathname;
+        const hash = linkElement.hash;
+
+        // Only handle accepted origins
+        if (
+          !this.isAcceptedOrigin(origin) ||
+          this.config.link.ignorePathnames.some((p) => pathname.includes(p))
+        ) {
+          return;
+        }
+
+        const { href } = this.generateHref(linkElement, origin, pathname, hash);
+
+        // Preventively update the link href before the context menu opens
+        // So "Open in new tab", "Copy link" etc will use the correct href
+        if (href && href !== linkElement.href) {
+          linkElement.href = href;
+        }
+      } catch (err) {
+        console.warn("[ParamTracker] contextmenu propagation error:", err);
       }
     });
   };

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ParamTracker Demo — Link Attributes</title>
+  </head>
+  <body>
+    <h1>Links with Managed Attributes</h1>
+    <p>Visit with <code>?utm_source=tracker&utm_medium=demo</code></p>
+
+    <a href="pages/page1.html">Regular Link</a><br />
+    <a href="pages/page3.html" role="button">Button Role Link</a><br />
+    <a href="pages/page3.html" data-filter="any">Data Attributes</a>
+
+    <script src="../dist/tracker.js"></script>
+    <script>
+      const tracker = new ParamTracker({
+        link: {
+          manageAttributes: ["role", "data-filter"],
+          ignoreAttrValues: ["button", "any"]
+        }
+      });
+    </script>
+
+    <!-- Helpers -->
+    <div
+      style="margin-top: 1rem; background: #fffbe6; padding: 1rem; border-left: 4px solid #f5c518"
+    >
+      💡 <strong>Note:</strong> Links containing values listed in
+      <code>ignoreAttrValues</code> within attributes specified by
+      <code>manageAttributes</code> will be ignored and won't propagate parameters.
+    </div>
+
+    <hr />
+    <div><em>Current URL parameters: </em><span id="params"></span></div>
+    <hr />
+
+    <script>
+      document.getElementById("params").textContent = window.location.search
+        ? window.location.search
+        : "None";
+    </script>
+  </body>
+</html>
