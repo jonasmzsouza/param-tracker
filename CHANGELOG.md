@@ -5,6 +5,14 @@ The format follows the conventions of Conventional Commits(https://www.conventio
 
 ---
 
+## 3.1.0
+
+### ✨ Features
+- Enhance origin validation, add context menu propagation, caching and advanced demos (#20)
+
+### 🤖 CI
+- Migrate to PR-based release workflow using create-pull-request (#19)
+
 ## ⏪ 3.0.2
 
 ### ⏪ Reverts
