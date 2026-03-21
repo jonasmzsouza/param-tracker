@@ -124,8 +124,6 @@ class ParamTracker {
     if (this._initialized) return this;
 
     this.sanitizeLinks();
-    this.bindLinkEvents();
-    this.bindButtonEvents();
     this.bindEvents();
     this.restoreScrollHash();
     this.observeDOM();
@@ -625,41 +623,58 @@ class ParamTracker {
   };
 
   /**
-   * Binds click events to links for tracking and manipulation
+   * Bind document-level event listeners used by the tracker.
+   *
+   * Registers handlers for user interactions on the document:
+   * - "click" -> this.handleDocumentClick
+   * - "contextmenu" -> this.handleContextMenu
+   *
+   * Uses this.addListener to attach the handlers. Intended to be called during
+   * initialization to ensure the tracker receives document-level events.
+   *
    * @returns {void}
    */
-  bindLinkEvents = () => {
-    document.addEventListener("click", (event) => {
-      const linkElement = event.target.closest("a");
-      if (!linkElement || !this.shouldHandleLink(linkElement)) return;
-      this.handleLinkClick(event, linkElement);
-    });
+  bindEvents = () => {
+    this.addListener(document, "click", this.handleDocumentClick);
+    this.addListener(document, "contextmenu", this.handleContextMenu);
   };
 
   /**
-   * Binds click events to buttons for form submission handling
+   * Handle a click event dispatched on the document and delegate to link/form handlers.
+   * Note: This method performs side effects via `this.handleLinkClick` and
+   * `this.addParamsToForm`.
+   *
+   * @private
+   * @param {Event} event - The click event. The handler expects `event.target` to be an Element
+   *                        (i.e. to implement `closest`) so it can locate ancestor anchors/forms.
    * @returns {void}
+   *
+   * @fires Tracker#handleLinkClick
+   * @fires Tracker#addParamsToForm
    */
-  bindButtonEvents = () => {
-    document.addEventListener("click", (event) => {
-      const button = event.target.closest("button, input[type='submit']");
-      if (!button) return;
+  handleDocumentClick = (event) => {
+    if (event.defaultPrevented || !event.target.closest) return;
 
-      const form = button.closest("form");
-      if (!form) return;
+    // Link handling
+    const linkElement = event.target.closest("a");
+    if (!linkElement || !this.shouldHandleLink(linkElement)) return;
 
-      const isAcceptedForm = this.config.form.acceptFormIds.some((id) =>
-        form.id.includes(id)
-      );
+    this.handleLinkClick(event, linkElement);
 
-      if (isAcceptedForm) {
-        this.addParamsToForm(form);
-      }
-    });
-  };
+    // Form handling
+    const button = event.target.closest("button, input[type='submit']");
+    if (!button) return;
 
-  bindEvents = () => {
-    this.addListener(document, "contextmenu", this.handleContextMenu);
+    const form = button.closest("form");
+    if (!form) return;
+
+    const isAcceptedForm = this.config.form.acceptFormIds.some((id) =>
+      form.id.includes(id)
+    );
+
+    if (isAcceptedForm) {
+      this.addParamsToForm(form);
+    }
   };
 
   /**
