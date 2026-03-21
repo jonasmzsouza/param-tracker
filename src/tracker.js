@@ -108,6 +108,9 @@ class ParamTracker {
 
     // Cache per instance
     this._originCache = new Map();
+
+    // Observer
+    this._observer = null;
   }
 
   /**
@@ -122,6 +125,7 @@ class ParamTracker {
     this.bindButtonEvents();
     this.bindContextMenuEvents();
     this.restoreScrollHash();
+    this.observeDOM();
 
     this._initialized = true;
 
@@ -135,6 +139,28 @@ class ParamTracker {
   refresh = () => {
     this._originCache.clear();
     this.sanitizeLinks();
+  };
+
+  /**
+   * Observe the document body for added nodes and trigger link sanitization.
+   * @returns {void}
+   */
+  observeDOM = () => {
+    if (this._observer) return;
+
+    this._observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.addedNodes.length > 0) {
+          this.sanitizeLinks();
+          break;
+        }
+      }
+    });
+
+    this._observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
   };
 
   /**
