@@ -105,6 +105,9 @@ class ParamTracker {
 
     // Lifecycle state
     this._initialized = false;
+
+    // Cache per instance
+    this._originCache = new Map();
   }
 
   /**
@@ -322,15 +325,14 @@ class ParamTracker {
    * @returns {bool}
    */
   isAcceptedOrigin = (() => {
-    const cache = new Map();
-
     return function (origin) {
-      if (cache.has(origin)) return cache.get(origin);
+      if (this._originCache.has(origin)) return this._originCache.get(origin);
 
       try {
         const normalizedOrigin = origin.startsWith("http")
           ? origin
           : `https://${origin}`;
+
         const { hostname } = new URL(normalizedOrigin);
         const allowedDomains = this.config?.link?.acceptOrigins ?? [];
 
@@ -339,10 +341,10 @@ class ParamTracker {
             hostname === baseDomain || hostname.endsWith(`.${baseDomain}`)
         );
 
-        cache.set(origin, isAccepted);
+        this._originCache.set(origin, isAccepted);
         return isAccepted;
       } catch {
-        cache.set(origin, false);
+        this._originCache.set(origin, false);
         return false;
       }
     };
