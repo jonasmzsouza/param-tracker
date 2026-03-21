@@ -103,8 +103,8 @@ class ParamTracker {
     // Merges default and custom configurations
     this.config = this.mergeConfig(defaults, customConfig);
 
-    // Starts automatically on DOM ready
-    document.addEventListener("DOMContentLoaded", () => this.init());
+    // Lifecycle state
+    this._initialized = false;
   }
 
   /**
@@ -112,11 +112,17 @@ class ParamTracker {
    * @returns {void}
    */
   init = () => {
+    if (this._initialized) return this;
+
     this.sanitizeLinks();
     this.bindLinkEvents();
     this.bindButtonEvents();
     this.bindContextMenuEvents();
     this.restoreScrollHash();
+
+    this._initialized = true;
+
+    return this;
   };
 
   /**
