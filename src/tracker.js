@@ -145,6 +145,26 @@ class ParamTracker {
   };
 
   /**
+   * Gracefully destroys the tracker instance, releasing resources and resetting internal state.
+   * The method is idempotent and safe to call multiple times.
+   *
+   * @returns {void}
+   */
+  destroy = () => {
+    if (!this._initialized) return;
+
+    this.removeAllListeners();
+
+    if (this._observer) {
+      this._observer.disconnect();
+      this._observer = null;
+    }
+
+    this._originCache.clear();
+    this._initialized = false;
+  };
+
+  /**
    * Observe the document body for added nodes and trigger link sanitization.
    * @returns {void}
    */
