@@ -129,6 +129,15 @@ class ParamTracker {
   };
 
   /**
+   * Clear internal origin cache and re-run link sanitization.
+   * @returns {void}
+   */
+  refresh = () => {
+    this._originCache.clear();
+    this.sanitizeLinks();
+  };
+
+  /**
    * Sanitizes string arrays: trims, lowercases, deduplicates, and optionally ensures `:` suffix.
    * 
    * @param {Array<any>} arr
