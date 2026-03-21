@@ -106,6 +106,9 @@ class ParamTracker {
     // Lifecycle state
     this._initialized = false;
 
+    // Event manager
+    this._listeners = [];
+
     // Cache per instance
     this._originCache = new Map();
 
@@ -161,6 +164,32 @@ class ParamTracker {
       childList: true,
       subtree: true,
     });
+  };
+
+  /**
+   * Add an event listener to a target and record it for later cleanup.
+   *
+   * @param {EventTarget} target - The target to attach the event listener to.
+   * @param {string} event - The event type to listen for (e.g., "click", "input").
+   * @param {(EventListener|Function)} handler - The handler function to invoke when the event fires.
+   * @param {(boolean|AddEventListenerOptions)=} [options] - Optional options or useCapture flag forwarded to addEventListener.
+   * @returns {void}
+   */
+  addListener = (target, event, handler, options) => {
+    target.addEventListener(event, handler, options);
+    this._listeners.push({ target, event, handler });
+  };
+
+  /**
+   * Remove all event listeners that have been registered and tracked on this instance.
+   * 
+   * @returns {void}
+   */
+  removeAllListeners = () => {
+    this._listeners.forEach(({ target, event, handler }) => {
+      target.removeEventListener(event, handler);
+    });
+    this._listeners = [];
   };
 
   /**
