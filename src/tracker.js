@@ -126,7 +126,7 @@ class ParamTracker {
     this.sanitizeLinks();
     this.bindLinkEvents();
     this.bindButtonEvents();
-    this.bindContextMenuEvents();
+    this.bindEvents();
     this.restoreScrollHash();
     this.observeDOM();
 
@@ -658,41 +658,47 @@ class ParamTracker {
     });
   };
 
+  bindEvents = () => {
+    this.addListener(document, "contextmenu", this.handleContextMenu);
+  };
+
   /**
-   * Binds contextmenu (right-click) events to links.
-   * This ensures that when the user right-clicks a link and chooses
-   * “Open link in new tab/window” or “Copy link address”,
-   * the link has already been sanitized and has the propagated parameters.
+   * Contextmenu event handler that ensures anchor elements have an up-to-date href
+   * before the browser context menu is shown (so actions like "Open in new tab" or
+   * "Copy link" use the corrected URL).
+   *
+   * @param {Event} event - The contextmenu event (usually a MouseEvent) triggered by the user.
+   * @returns {void}
    */
-  bindContextMenuEvents = () => {
-    document.addEventListener("contextmenu", (event) => {
-      const linkElement = event.target.closest("a");
-      if (!linkElement || !this.shouldHandleLink(linkElement)) return;
+  handleContextMenu = (event) => {
+    if (!event.target.closest) return;
 
-      try {
-        const origin = linkElement.origin;
-        const pathname = linkElement.pathname;
-        const hash = linkElement.hash;
+    const linkElement = event.target.closest("a");
+    if (!linkElement || !this.shouldHandleLink(linkElement)) return;
 
-        // Only handle accepted origins
-        if (
-          !this.isAcceptedOrigin(origin) ||
-          this.config.link.ignorePathnames.some((p) => pathname.includes(p))
-        ) {
-          return;
-        }
+    try {
+      const origin = linkElement.origin;
+      const pathname = linkElement.pathname;
+      const hash = linkElement.hash;
 
-        const { href } = this.generateHref(linkElement, origin, pathname, hash);
-
-        // Preventively update the link href before the context menu opens
-        // So "Open in new tab", "Copy link" etc will use the correct href
-        if (href && href !== linkElement.href) {
-          linkElement.href = href;
-        }
-      } catch (err) {
-        console.warn("[ParamTracker] contextmenu propagation error:", err);
+      // Only handle accepted origins
+      if (
+        !this.isAcceptedOrigin(origin) ||
+        this.config.link.ignorePathnames.some((p) => pathname.includes(p))
+      ) {
+        return;
       }
-    });
+
+      const { href } = this.generateHref(linkElement, origin, pathname, hash);
+
+      // Preventively update the link href before the context menu opens
+      // So "Open in new tab", "Copy link" etc will use the correct href
+      if (href && href !== linkElement.href) {
+        linkElement.href = href;
+      }
+    } catch (err) {
+      console.warn("[ParamTracker] contextmenu propagation error:", err);
+    }
   };
 
   /**
