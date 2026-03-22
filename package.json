@@ -1,6 +1,6 @@
 {
   "name": "param-tracker",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Universal JavaScript utility for tracking and preserving UTM parameters in links and forms — compatible with browsers, Node.js, and ES Modules.",
   "type": "module",
   "main": "dist/tracker.cjs.js",

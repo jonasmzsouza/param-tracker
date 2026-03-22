@@ -5,6 +5,11 @@ The format follows the conventions of Conventional Commits(https://www.conventio
 
 ---
 
+## 4.0.1
+
+### 📚 Documentation
+- Update README.md with lifecycle control section (#27)
+
 ## 4.0.0
 
 ### 💥 Breaking Changes
