@@ -655,25 +655,29 @@ class ParamTracker {
   handleDocumentClick = (event) => {
     if (event.defaultPrevented || !event.target.closest) return;
 
-    // Link handling
-    const linkElement = event.target.closest("a");
-    if (!linkElement || !this.shouldHandleLink(linkElement)) return;
+    const target = event.target;
 
-    this.handleLinkClick(event, linkElement);
+    const linkElement = target.closest("a");
+    const buttonElement = target.closest("button, input[type='submit']");
 
-    // Form handling
-    const button = event.target.closest("button, input[type='submit']");
-    if (!button) return;
+    // LINK FIRST (priority)
+    if (linkElement && this.shouldHandleLink(linkElement)) {
+      this.handleLinkClick(event, linkElement);
+      return;
+    }
 
-    const form = button.closest("form");
-    if (!form) return;
+    // FORM
+    if (buttonElement) {
+      const form = buttonElement.closest("form");
+      if (!form) return;
 
-    const isAcceptedForm = this.config.form.acceptFormIds.some((id) =>
-      form.id.includes(id)
-    );
+      const isAcceptedForm = this.config.form.acceptFormIds.some((id) =>
+        form.id.includes(id)
+      );
 
-    if (isAcceptedForm) {
-      this.addParamsToForm(form);
+      if (isAcceptedForm) {
+        this.addParamsToForm(form);
+      }
     }
   };
 
