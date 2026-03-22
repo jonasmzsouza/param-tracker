@@ -15,7 +15,7 @@
       <button type="submit">Submit</button>
     </form>
 
-    <script src="../dist/tracker.js"></script>
+    <script src="../dist/tracker.min.js"></script>
     <script>
       const tracker = new ParamTracker({
         form: { acceptFormIds: ["leadForm"] }
@@ -26,7 +26,7 @@
         alert(
           "Form submitted with params:\n" + new URLSearchParams(new FormData(e.target)).toString()
         );
-      });
+      }).init();
     </script>
 
     <!-- Helpers -->

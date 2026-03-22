@@ -1,5 +1,5 @@
 /*
- * Tracker 3.0.0
+ * Tracker 4.0.0
  * JavaScript script for intelligent manipulation of links and forms on websites, 
  * preserving UTM parameters and removing irrelevant search parameters.
  * 
@@ -103,8 +103,17 @@ class ParamTracker {
     // Merges default and custom configurations
     this.config = this.mergeConfig(defaults, customConfig);
 
-    // Starts automatically on DOM ready
-    document.addEventListener("DOMContentLoaded", () => this.init());
+    // Lifecycle state
+    this._initialized = false;
+
+    // Event manager
+    this._listeners = [];
+
+    // Cache per instance
+    this._originCache = new Map();
+
+    // Observer
+    this._observer = null;
   }
 
   /**
@@ -112,11 +121,93 @@ class ParamTracker {
    * @returns {void}
    */
   init = () => {
+    if (this._initialized) return this;
+
     this.sanitizeLinks();
-    this.bindLinkEvents();
-    this.bindButtonEvents();
-    this.bindContextMenuEvents();
+    this.bindEvents();
     this.restoreScrollHash();
+    this.observeDOM();
+
+    this._initialized = true;
+
+    return this;
+  };
+
+  /**
+   * Clear internal origin cache and re-run link sanitization.
+   * @returns {void}
+   */
+  refresh = () => {
+    this._originCache.clear();
+    this.sanitizeLinks();
+  };
+
+  /**
+   * Gracefully destroys the tracker instance, releasing resources and resetting internal state.
+   * The method is idempotent and safe to call multiple times.
+   *
+   * @returns {void}
+   */
+  destroy = () => {
+    if (!this._initialized) return;
+
+    this.removeAllListeners();
+
+    if (this._observer) {
+      this._observer.disconnect();
+      this._observer = null;
+    }
+
+    this._originCache.clear();
+    this._initialized = false;
+  };
+
+  /**
+   * Observe the document body for added nodes and trigger link sanitization.
+   * @returns {void}
+   */
+  observeDOM = () => {
+    if (this._observer) return;
+
+    this._observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.addedNodes.length > 0) {
+          this.sanitizeLinks();
+          break;
+        }
+      }
+    });
+
+    this._observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+  };
+
+  /**
+   * Add an event listener to a target and record it for later cleanup.
+   *
+   * @param {EventTarget} target - The target to attach the event listener to.
+   * @param {string} event - The event type to listen for (e.g., "click", "input").
+   * @param {(EventListener|Function)} handler - The handler function to invoke when the event fires.
+   * @param {(boolean|AddEventListenerOptions)=} [options] - Optional options or useCapture flag forwarded to addEventListener.
+   * @returns {void}
+   */
+  addListener = (target, event, handler, options) => {
+    target.addEventListener(event, handler, options);
+    this._listeners.push({ target, event, handler });
+  };
+
+  /**
+   * Remove all event listeners that have been registered and tracked on this instance.
+   * 
+   * @returns {void}
+   */
+  removeAllListeners = () => {
+    this._listeners.forEach(({ target, event, handler }) => {
+      target.removeEventListener(event, handler);
+    });
+    this._listeners = [];
   };
 
   /**
@@ -316,15 +407,14 @@ class ParamTracker {
    * @returns {bool}
    */
   isAcceptedOrigin = (() => {
-    const cache = new Map();
-
     return function (origin) {
-      if (cache.has(origin)) return cache.get(origin);
+      if (this._originCache.has(origin)) return this._originCache.get(origin);
 
       try {
         const normalizedOrigin = origin.startsWith("http")
           ? origin
           : `https://${origin}`;
+
         const { hostname } = new URL(normalizedOrigin);
         const allowedDomains = this.config?.link?.acceptOrigins ?? [];
 
@@ -333,10 +423,10 @@ class ParamTracker {
             hostname === baseDomain || hostname.endsWith(`.${baseDomain}`)
         );
 
-        cache.set(origin, isAccepted);
+        this._originCache.set(origin, isAccepted);
         return isAccepted;
       } catch {
-        cache.set(origin, false);
+        this._originCache.set(origin, false);
         return false;
       }
     };
@@ -533,27 +623,52 @@ class ParamTracker {
   };
 
   /**
-   * Binds click events to links for tracking and manipulation
+   * Bind document-level event listeners used by the tracker.
+   *
+   * Registers handlers for user interactions on the document:
+   * - "click" -> this.handleDocumentClick
+   * - "contextmenu" -> this.handleContextMenu
+   *
+   * Uses this.addListener to attach the handlers. Intended to be called during
+   * initialization to ensure the tracker receives document-level events.
+   *
    * @returns {void}
    */
-  bindLinkEvents = () => {
-    document.addEventListener("click", (event) => {
-      const linkElement = event.target.closest("a");
-      if (!linkElement || !this.shouldHandleLink(linkElement)) return;
-      this.handleLinkClick(event, linkElement);
-    });
+  bindEvents = () => {
+    this.addListener(document, "click", this.handleDocumentClick);
+    this.addListener(document, "contextmenu", this.handleContextMenu);
   };
 
   /**
-   * Binds click events to buttons for form submission handling
+   * Handle a click event dispatched on the document and delegate to link/form handlers.
+   * Note: This method performs side effects via `this.handleLinkClick` and
+   * `this.addParamsToForm`.
+   *
+   * @private
+   * @param {Event} event - The click event. The handler expects `event.target` to be an Element
+   *                        (i.e. to implement `closest`) so it can locate ancestor anchors/forms.
    * @returns {void}
+   *
+   * @fires Tracker#handleLinkClick
+   * @fires Tracker#addParamsToForm
    */
-  bindButtonEvents = () => {
-    document.addEventListener("click", (event) => {
-      const button = event.target.closest("button, input[type='submit']");
-      if (!button) return;
+  handleDocumentClick = (event) => {
+    if (event.defaultPrevented || !event.target.closest) return;
 
-      const form = button.closest("form");
+    const target = event.target;
+
+    const linkElement = target.closest("a");
+    const buttonElement = target.closest("button, input[type='submit']");
+
+    // LINK FIRST (priority)
+    if (linkElement && this.shouldHandleLink(linkElement)) {
+      this.handleLinkClick(event, linkElement);
+      return;
+    }
+
+    // FORM
+    if (buttonElement) {
+      const form = buttonElement.closest("form");
       if (!form) return;
 
       const isAcceptedForm = this.config.form.acceptFormIds.some((id) =>
@@ -563,76 +678,89 @@ class ParamTracker {
       if (isAcceptedForm) {
         this.addParamsToForm(form);
       }
-    });
+    }
   };
 
   /**
-   * Binds contextmenu (right-click) events to links.
-   * This ensures that when the user right-clicks a link and chooses
-   * “Open link in new tab/window” or “Copy link address”,
-   * the link has already been sanitized and has the propagated parameters.
+   * Contextmenu event handler that ensures anchor elements have an up-to-date href
+   * before the browser context menu is shown (so actions like "Open in new tab" or
+   * "Copy link" use the corrected URL).
+   *
+   * @param {Event} event - The contextmenu event (usually a MouseEvent) triggered by the user.
+   * @returns {void}
    */
-  bindContextMenuEvents = () => {
-    document.addEventListener("contextmenu", (event) => {
-      const linkElement = event.target.closest("a");
-      if (!linkElement || !this.shouldHandleLink(linkElement)) return;
+  handleContextMenu = (event) => {
+    if (!event.target.closest) return;
 
-      try {
-        const origin = linkElement.origin;
-        const pathname = linkElement.pathname;
-        const hash = linkElement.hash;
+    const linkElement = event.target.closest("a");
+    if (!linkElement || !this.shouldHandleLink(linkElement)) return;
 
-        // Only handle accepted origins
-        if (
-          !this.isAcceptedOrigin(origin) ||
-          this.config.link.ignorePathnames.some((p) => pathname.includes(p))
-        ) {
-          return;
-        }
+    try {
+      const origin = linkElement.origin;
+      const pathname = linkElement.pathname;
+      const hash = linkElement.hash;
 
-        const { href } = this.generateHref(linkElement, origin, pathname, hash);
-
-        // Preventively update the link href before the context menu opens
-        // So "Open in new tab", "Copy link" etc will use the correct href
-        if (href && href !== linkElement.href) {
-          linkElement.href = href;
-        }
-      } catch (err) {
-        console.warn("[ParamTracker] contextmenu propagation error:", err);
+      // Only handle accepted origins
+      if (
+        !this.isAcceptedOrigin(origin) ||
+        this.config.link.ignorePathnames.some((p) => pathname.includes(p))
+      ) {
+        return;
       }
-    });
+
+      const { href } = this.generateHref(linkElement, origin, pathname, hash);
+
+      // Preventively update the link href before the context menu opens
+      // So "Open in new tab", "Copy link" etc will use the correct href
+      if (href && href !== linkElement.href) {
+        linkElement.href = href;
+      }
+    } catch (err) {
+      console.warn("[ParamTracker] contextmenu propagation error:", err);
+    }
   };
 
   /**
-   * Restores scroll position for hash links on page load.
+   * Attempt to smoothly scroll the element referenced by the current URL hash into view.
+   *
+   * If window.location.hash is empty, the function returns immediately. Otherwise it
+   * treats the hash as a selector (e.g. "#someId") and repeatedly queries the DOM
+   * with document.querySelector for up to a maximum number of attempts (10 by default).
+   * When the element is found it calls element.scrollIntoView({ behavior: "smooth" })
+   * and stops. If the element is not present after the maximum retries, the function
+   * stops attempting. Retries are scheduled using requestAnimationFrame.
+   *
+   * Side effects:
+   * - Reads window.location.hash
+   * - Calls document.querySelector
+   * - Calls element.scrollIntoView with smooth behavior (if element is found)
+   *
+   * @function restoreScrollHash
    * @returns {void}
    */
   restoreScrollHash = () => {
-    if (window.location.hash) {
-      document.querySelector(window.location.hash)?.scrollIntoView({ behavior: "smooth" });
-    }
+    const hash = window.location.hash;
+    if (!hash) return;
+
+    let attempts = 0;
+    const maxAttempts = 10;
+
+    const tryScroll = () => {
+      const el = document.querySelector(hash);
+
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+        return;
+      }
+
+      if (attempts++ < maxAttempts) {
+        requestAnimationFrame(tryScroll);
+      }
+    };
+
+    tryScroll();
   };
 }
 
-// Export universal (UMD / CommonJS / Browser global)
-(function (global, factory) {
-  if (typeof module === "object" && typeof module.exports === "object") {
-    module.exports = factory(); // Node / CommonJS
-  } else if (typeof define === "function" && define.amd) {
-    define([], factory); // AMD
-  } else {
-    global.ParamTracker = factory().ParamTracker; // Browser global
-  }
-})(
-  typeof globalThis !== "undefined"
-    ? globalThis
-    : typeof window !== "undefined"
-      ? window
-      : this,
-  function () {
-    return { ParamTracker };
-  }
-);
-
-// Optional ESM export (for import)
 export { ParamTracker };
+export default ParamTracker;

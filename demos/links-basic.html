@@ -18,11 +18,11 @@
       >Accepted Origin (custom)</a
     >
 
-    <script src="../dist/tracker.js"></script>
+    <script src="../dist/tracker.min.js"></script>
     <script>
       const tracker = new ParamTracker({
         link: { acceptOrigins: ["example.com"] }
-      });
+      }).init();
     </script>
 
     <!-- Helpers -->

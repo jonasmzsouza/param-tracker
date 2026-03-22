@@ -72,7 +72,7 @@ Download one the latest [releases](https://github.com/jonasmzsouza/param-tracker
       excludeParams: ["any_filter", "any_search"]
       // another configuration option
     }
-  });
+  }).init();
 </script>
 ```
 
@@ -92,7 +92,7 @@ const tracker = new ParamTracker({
     excludeParams: ["any_filter", "any_search"]
     // another configuration option
   }
-});
+}).init();
 ```
 
 #### 💻 Option 3 — Node.js / CommonJS
@@ -111,7 +111,7 @@ const tracker = new ParamTracker({
     excludeParams: ["any_filter", "any_search"]
     // another configuration option
   }
-});
+}).init();
 ```
 
 ---
@@ -153,7 +153,7 @@ For more practical examples, including advanced use cases with all configuration
         link: {
           acceptOrigins: ["example.com"]
         }
-      });
+      }).init();
     </script>
   </body>
 </html>

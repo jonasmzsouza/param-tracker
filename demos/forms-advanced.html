@@ -15,7 +15,7 @@
       <button type="submit">Sign Up</button>
     </form>
 
-    <script src="../dist/tracker.js"></script>
+    <script src="../dist/tracker.min.js"></script>
     <script>
       const tracker = new ParamTracker({
         form: { acceptFormIds: ["signupForm"] },
@@ -23,7 +23,7 @@
           includeParams: ["ref", "promo"],
           excludeParams: ["temp"]
         }
-      });
+      }).init();
 
       document.getElementById("signupForm").addEventListener("submit", (e) => {
         e.preventDefault();
