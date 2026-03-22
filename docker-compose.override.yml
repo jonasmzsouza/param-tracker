@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  tracker:
+    volumes:
+      - ./demos:/usr/share/nginx/html:ro
+      # Mount dist to a different path to avoid read-only mountpoint issues in some Docker Desktop setups
+      - ./dist:/usr/share/nginx/html_dist
+    build: .
+    # Useful for local dev so you can edit files without rebuilding image
+    # Make sure to run the project's build locally (npm run build) so ./dist exists,
+    # or run `docker compose up --build` to build inside the container.
