@@ -762,25 +762,5 @@ class ParamTracker {
   };
 }
 
-// Export universal (UMD / CommonJS / Browser global)
-(function (global, factory) {
-  if (typeof module === "object" && typeof module.exports === "object") {
-    module.exports = factory(); // Node / CommonJS
-  } else if (typeof define === "function" && define.amd) {
-    define([], factory); // AMD
-  } else {
-    global.ParamTracker = factory().ParamTracker; // Browser global
-  }
-})(
-  typeof globalThis !== "undefined"
-    ? globalThis
-    : typeof window !== "undefined"
-      ? window
-      : this,
-  function () {
-    return { ParamTracker };
-  }
-);
-
-// Optional ESM export (for import)
 export { ParamTracker };
+export default ParamTracker;
