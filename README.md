@@ -22,7 +22,9 @@ Now available for **ES Modules** _and_ **global browser usage (UMD/IIFE)** — n
 ✅ Dynamically manages and validates custom link attributes (`manageAttributes`)  
 ✅ Skips links whose **attribute values** match ignored patterns (`ignoreAttrValues`) —  
 &nbsp;&nbsp;&nbsp;🔹 Used together with `manageAttributes` to filter links by attribute content.  
-✅ Fully supports ES Modules (`import`/`export`), CommonJS, AMD, and browser globals (UMD)
+✅ Fully supports ES Modules (`import`/`export`), CommonJS, AMD, and browser globals (UMD)  
+✅ Full lifecycle control (`init`, `refresh`, `destroy`)  
+✅ SPA-ready with DOM observation (MutationObserver)
 
 ---
 
@@ -113,6 +115,41 @@ const tracker = new ParamTracker({
   }
 }).init();
 ```
+
+---
+
+## 🔄 Lifecycle Control
+
+ParamTracker now provides full lifecycle control, allowing you to initialize, refresh, and destroy the instance when needed — especially useful for SPA (React, Vue, Angular) or dynamic environments.
+
+### Methods
+
+```js
+const tracker = new ParamTracker(config);
+
+// Initialize
+tracker.init();
+
+// Re-run link sanitization and clear internal cache
+tracker.refresh();
+
+// Remove all listeners and observers (cleanup)
+tracker.destroy();
+```
+
+**Notes**
+
+- `init()` is idempotent (safe to call multiple times)
+- `destroy()` removes all event listeners and stops DOM observation
+- `refresh()` is useful when URL parameters or DOM state changes dynamically
+
+---
+
+## ⚡ Dynamic DOM Support
+
+ParamTracker automatically observes DOM changes using `MutationObserver`, ensuring that dynamically added links are also sanitized and tracked.
+
+This makes it fully compatible with modern frameworks like React, Vue, and Angular.
 
 ---
 
@@ -314,6 +351,14 @@ link: {
 
 ---
 
+## 🧩 Advanced Usage
+
+ParamTracker is designed to be extensible and will support advanced configuration patterns such as presets and plugins for framework-specific behavior.
+
+Stay tuned for upcoming releases.
+
+---
+
 ## 🧪 Scripts úteis
 
 - Lint:
@@ -338,12 +383,14 @@ npm run build
 
 ## 🏗️ Build Outputs
 
-| Format   | File                  | Description                              |
-| -------- | --------------------- | ---------------------------------------- |
-| UMD      | `dist/tracker.js`     | Universal build for browsers and Node.js |
-| Minified | `dist/tracker.min.js` | Minified version for production use      |
-| ESM      | `dist/tracker.esm.js` | ES Module format (`import`)              |
-| CJS      | `dist/tracker.cjs.js` | CommonJS format (`require`)              |
+| Format       | File                      | Description                              |
+| ------------ | ------------------------- | ---------------------------------------- |
+| UMD          | `dist/tracker.js`         | Universal build for browsers and Node.js |
+| UMD Minified | `dist/tracker.min.js`     | Minified version for production use      |
+| ESM          | `dist/tracker.esm.js`     | ES Module format (`import`)              |
+| ESM Minified | `dist/tracker.esm.min.js` | Minified version for production use      |
+| CJS          | `dist/tracker.cjs.js`     | CommonJS format (`require`)              |
+| CJS Minified | `dist/tracker.cjs.min.js` | Minified version for production use      |
 
 ---
 
