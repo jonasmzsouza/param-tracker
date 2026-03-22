@@ -5,6 +5,11 @@ The format follows the conventions of Conventional Commits(https://www.conventio
 
 ---
 
+## 4.0.0
+
+### 💥 Breaking Changes
+- Add full lifecycle, event manager, and SPA support (#25)
+
 ## 3.1.1
 
 ### 🐛 Fixes
