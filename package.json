@@ -69,5 +69,8 @@
     "eslint-plugin-import": "^2.32.0",
     "globals": "^17.0.0",
     "release-suite": "^3.1.0"
+  },
+  "dependencies": {
+    "tldts": "^7.0.27"
   }
 }
