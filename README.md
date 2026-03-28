@@ -30,15 +30,7 @@ Now available for **ES Modules** _and_ **global browser usage (UMD/IIFE)** — n
 
 ## ⚙️ Installation
 
-### Clone and install:
-
-```bash
-git clone https://github.com/jonasmzsouza/param-tracker.git
-cd param-tracker
-npm install
-```
-
-### Or via NPM
+### via NPM
 
 ```bash
 npm install param-tracker
@@ -64,16 +56,7 @@ Download one the latest [releases](https://github.com/jonasmzsouza/param-tracker
 <script src="https://cdn.jsdelivr.net/npm/param-tracker@latest/dist/tracker.min.js"></script>
 <script>
   const tracker = new ParamTracker({
-    form: {
-      acceptFormIds: ["registrationForm"]
-    },
-    link: {
-      acceptOrigins: ["example.com"],
-      ignoreClasses: ["no-track"],
-      includeParams: ["custom_param"],
-      excludeParams: ["any_filter", "any_search"]
-      // another configuration option
-    }
+    // Your custom settings go here
   }).init();
 </script>
 ```
@@ -84,16 +67,7 @@ Download one the latest [releases](https://github.com/jonasmzsouza/param-tracker
 import { ParamTracker } from "param-tracker";
 
 const tracker = new ParamTracker({
-  form: {
-    acceptFormIds: ["registrationForm"]
-  },
-  link: {
-    acceptOrigins: ["example.com"],
-    ignoreClasses: ["no-track"],
-    includeParams: ["custom_param"],
-    excludeParams: ["any_filter", "any_search"]
-    // another configuration option
-  }
+  // Your custom settings go here
 }).init();
 ```
 
@@ -103,16 +77,7 @@ const tracker = new ParamTracker({
 const { ParamTracker } = require("param-tracker");
 
 const tracker = new ParamTracker({
-  form: {
-    acceptFormIds: ["registrationForm"]
-  },
-  link: {
-    acceptOrigins: ["example.com"],
-    ignoreClasses: ["no-track"],
-    includeParams: ["custom_param"],
-    excludeParams: ["any_filter", "any_search"]
-    // another configuration option
-  }
+  // Your custom settings go here
 }).init();
 ```
 
@@ -125,6 +90,10 @@ ParamTracker now provides full lifecycle control, allowing you to initialize, re
 ### Methods
 
 ```js
+// Config (Optional)
+const config = {}
+
+// Instance
 const tracker = new ParamTracker(config);
 
 // Initialize
@@ -170,7 +139,7 @@ For more practical examples, including advanced use cases with all configuration
   </head>
   <body>
     <!-- Example Links -->
-    <a href="https://example.com/page1?utm_source=google&utm_medium=cpc">Page 1</a>
+    <a href="https://example.com/page1?custom=example">Page 1</a>
     <a href="https://example.com/page2">Page 2</a>
 
     <!-- Example Form -->
@@ -188,7 +157,7 @@ For more practical examples, including advanced use cases with all configuration
           acceptFormIds: ["registrationForm"]
         },
         link: {
-          acceptOrigins: ["example.com"]
+          acceptOrigins: ["example.com"] //cross-domain
         }
       }).init();
     </script>
@@ -196,17 +165,16 @@ For more practical examples, including advanced use cases with all configuration
 </html>
 ```
 
-When you click a link like:
-
-```bash
-https://example.com/page2
-```
-
-while the current page contains UTM parameters such as ?utm_source=tracker,
+When your page is visited with UTM parameters such as `?utm_source=tracker&utm_medium=demo`
+and you click a link like `Page 1` or `Page 2`. While the current page contains UTM parameters,
 ParamTracker will automatically append them to the target URL:
 
 ```bash
-https://example.com/page2?utm_source=tracker
+# Page 1
+https://example.com/page1?utm_source=tracker&utm_medium=demo&custom=example
+
+# Page 2
+https://example.com/page2?utm_source=tracker&utm_medium=demo
 ```
 
 And when you submit a form with an accepted ID, the library automatically injects hidden inputs containing the same UTM parameters (and any additional parameters defined in the configuration).
@@ -231,7 +199,7 @@ These demos illustrate how ParamTracker keeps, merges, or ignores parameters bas
 | Nest     | Option             | Type       | Description                                                                                                                                                               |
 | -------- | ------------------ | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **form** | `acceptFormIds`    | `string[]` | IDs of forms that should automatically receive UTM and custom parameters.                                                                                                 |
-| **link** | `acceptOrigins`    | `string[]` | Defines which domains or subdomains are allowed for parameter propagation.                                                                                                |
+| **link** | `acceptOrigins`    | `string[]` | Defines which domains or subdomains are allowed for parameter propagation. Useful only across domains. Domains with the library installed are automatically detected.     |
 | **link** | `ignorePathnames`  | `string[]` | Excludes specific URL pathnames from tracking.                                                                                                                            |
 | **link** | `ignoreClasses`    | `string[]` | Ignores links that contain any of these CSS classes.                                                                                                                      |
 | **link** | `ignoreProtocols`  | `string[]` | Skips links whose URL starts with certain protocols. Some protocols already handled: `mailto:`, `tel:`, `sms:`, `file:`, `blob:`, `data:`, `ftp:`, `ftps:`, `javascript:` |
@@ -262,7 +230,7 @@ new ParamTracker({
 
 ### 🌍 `link.acceptOrigins`
 
-Specifies the list of domains and subdomains where tracking should be active.
+Specifies the list of domains and subdomains where tracking should be active. Useful only across domains. Domains with the library installed are automatically detected.
 
 ```js
 link: {

@@ -260,12 +260,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          ASSETS=()
-          if [ -d dist ]; then
-            ASSETS=(dist/**)
-          fi
-
           gh release create "${{ needs.create.outputs.tag }}" \
             --title "${{ needs.create.outputs.tag }}" \
-            --notes-file RELEASE_NOTES.md \
-            "${ASSETS[@]}"
+            --notes-file RELEASE_NOTES.md
