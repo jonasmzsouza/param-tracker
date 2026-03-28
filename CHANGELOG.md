@@ -5,6 +5,11 @@ The format follows the conventions of Conventional Commits(https://www.conventio
 
 ---
 
+## 5.0.0
+
+### 💥 Breaking Changes
+- Architecture to micro-kernel with modular handlers (#29)
+
 ## 4.0.1
 
 ### 📚 Documentation
