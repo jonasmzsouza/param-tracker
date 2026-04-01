@@ -53,3 +53,13 @@
   display: flex;
   justify-content: space-between;
 }
+
+@media (max-width: 900px) {
+  .docs-layout {
+    flex-direction: column;
+  }
+
+  .docs-sidebar {
+    width: 100%;
+  }
+}

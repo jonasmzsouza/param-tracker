@@ -19,8 +19,4 @@ title: Documentation
 
 </div>
 
-<div class="docs-toc">
-{% include toc.html %}
-</div>
-
 </div>
