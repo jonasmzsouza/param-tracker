@@ -43,15 +43,15 @@ export function createLinkHandler(instance) {
 
       const linkHref = linkElement.getAttribute("href") || "";
 
-      // Ignore links with specified classes
-      if (ignoreClasses.some((cls) => linkElement.classList.contains(cls)))
-        return false;
+      // Ignore file links
+      if (isFileUrl(linkHref)) return false;
 
       // Ignore links with specific protocols (mailto:, tel:, etc.)
       if (ignoreProtocols.some((p) => linkHref.startsWith(p))) return false;
 
-      // Ignore file links
-      if (isFileUrl(linkHref)) return false;
+      // Ignore links with specified classes
+      if (ignoreClasses.some((cls) => linkElement.classList.contains(cls)))
+        return false;      
 
       // Ignore links that have specific manageAttributes with values in ignoreAttrValues
       for (const attr of manageAttributes) {
