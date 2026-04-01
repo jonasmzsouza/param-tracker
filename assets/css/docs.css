@@ -1,0 +1,55 @@
+.docs-layout {
+  display: flex;
+  gap: 40px;
+}
+
+.docs-sidebar {
+  width: 220px;
+}
+
+.docs-sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.docs-sidebar li {
+  margin: 8px 0;
+}
+
+.docs-sidebar a {
+  text-decoration: none;
+}
+
+.docs-sidebar a.active {
+  font-weight: bold;
+}
+
+.docs-content {
+  flex: 1;
+  max-width: 800px;
+}
+
+.docs-toc {
+  width: 200px;
+  font-size: 14px;
+}
+
+.top-nav {
+  margin-bottom: 30px;
+  display: flex;
+  gap: 20px;
+}
+
+.top-nav a {
+  text-decoration: none;
+}
+
+.top-nav a.active {
+  font-weight: bold;
+}
+
+.pager {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+}

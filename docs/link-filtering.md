@@ -1,3 +1,7 @@
+---
+title: Link Filtering
+---
+
 # Link Filtering Rules
 
 This document explains how **ParamTracker** decides whether a link should be processed or ignored.

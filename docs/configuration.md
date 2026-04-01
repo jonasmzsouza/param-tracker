@@ -1,3 +1,7 @@
+---
+title: Configuration
+---
+
 # ParamTracker Configuration
 
 This document describes all configuration options available in **ParamTracker**, including their default values and behavior.

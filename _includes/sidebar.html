@@ -1,0 +1,13 @@
+<nav class="docs-sidebar">
+  <h3>Documentation</h3>
+
+  <ul>
+    {% for item in site.data.navigation.docs %}
+    <li>
+      <a href="?doc={{ item.file }}" class="{% if page.doc == item.file %}active{% endif %}">
+        {{ item.title }}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</nav>

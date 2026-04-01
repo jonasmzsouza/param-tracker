@@ -1,0 +1,21 @@
+menu:
+
+  - title: Home
+    url: /
+
+  - title: Documentation
+    url: /docs/
+
+  - title: Demos
+    url: /demos/
+
+docs:
+
+  - title: Architecture
+    file: architecture.md
+
+  - title: Configuration
+    file: configuration.md
+
+  - title: Link Filtering
+    file: link-filtering.md

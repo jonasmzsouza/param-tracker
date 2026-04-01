@@ -1,3 +1,7 @@
+---
+title: Architecture
+---
+
 # ParamTracker Architecture
 
 This document explains the internal architecture of **ParamTracker 5.x**.

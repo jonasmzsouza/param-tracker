@@ -1,0 +1,7 @@
+{% assign selected = page.doc | default: "architecture.md" %}
+
+{% for item in site.data.navigation.docs %}
+  {% if item.file == selected %}
+    {% include_relative ../docs/{{ item.file }} %}
+  {% endif %}
+{% endfor %}
