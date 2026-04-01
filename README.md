@@ -120,11 +120,11 @@ For more practical examples, including advanced use cases with all configuration
       // Initialize ParamTracker with configuration
       const tracker = new ParamTracker({
         form: {
-          acceptFormIds: ["registrationForm"]
+          acceptFormIds: ['registrationForm'],
         },
         link: {
-          acceptOrigins: ["example.com"] //cross-domain
-        }
+          acceptOrigins: ['example.com'], //cross-domain
+        },
       }).init();
     </script>
   </body>
@@ -176,7 +176,7 @@ These demos illustrate how ParamTracker keeps, merges, or ignores parameters bas
 #### 📦 Option 2 — ES Module (Modern Apps)
 
 ```js
-import { ParamTracker } from "param-tracker";
+import { ParamTracker } from 'param-tracker';
 
 const tracker = new ParamTracker({
   // Your custom settings go here
@@ -186,7 +186,7 @@ const tracker = new ParamTracker({
 #### 💻 Option 3 — Node.js / CommonJS
 
 ```js
-const { ParamTracker } = require("param-tracker");
+const { ParamTracker } = require('param-tracker');
 
 const tracker = new ParamTracker({
   // Your custom settings go here

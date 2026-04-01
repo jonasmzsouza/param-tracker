@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -21,9 +21,9 @@
     <script>
       const tracker = new ParamTracker({
         link: {
-          includeParams: ["ref", "promo"],
-          excludeParams: ["temp"]
-        }
+          includeParams: ['ref', 'promo'],
+          excludeParams: ['temp'],
+        },
       }).init();
     </script>
 
@@ -47,9 +47,9 @@
     <hr />
 
     <script>
-      document.getElementById("params").textContent = window.location.search
+      document.getElementById('params').textContent = window.location.search
         ? window.location.search
-        : "None";
+        : 'None';
     </script>
   </body>
 </html>

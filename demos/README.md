@@ -7,8 +7,8 @@ Make sure the `/dist/tracker.min.js` build exists before testing.
 
 ## Available Demos
 
-| File                    | Demo                                                                              | Source                                                                                      | Description                                             |
-| ----------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| File                    | Demo                                                                             | Source                                                                                      | Description                                             |
+| ----------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
 | `links-basic.html`      | [LINK](https://jonasmzsouza.github.io/param-tracker/demos/links-basic.html)      | [LINK](https://github.com/jonasmzsouza/param-tracker/blob/main/demos/links-basic.html)      | Basic setup with links and forms keeping UTM parameters |
 | `links-ignore.html`     | [LINK](https://jonasmzsouza.github.io/param-tracker/demos/links-ignore.html)     | [LINK](https://github.com/jonasmzsouza/param-tracker/blob/main/demos/links-ignore.html)     | Ignoring links by class, pathname, or protocol          |
 | `links-attributes.html` | [LINK](https://jonasmzsouza.github.io/param-tracker/demos/links-attributes.html) | [LINK](https://github.com/jonasmzsouza/param-tracker/blob/main/demos/links-attributes.html) | Using `manageAttributes` and `ignoreAttrValues`         |

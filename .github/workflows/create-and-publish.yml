@@ -115,8 +115,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: release/${{ steps.compute.outputs.tagPrefix }}${{ steps.compute.outputs.version }}
-          title: ":bricks: chore(release): ${{ steps.compute.outputs.tagPrefix }}${{ steps.compute.outputs.version }} [skip ci]"
-          commit-message: ":bricks: chore(release): prepare version ${{ steps.compute.outputs.tagPrefix }}${{ steps.compute.outputs.version }} [skip ci]"
+          title: ':bricks: chore(release): ${{ steps.compute.outputs.tagPrefix }}${{ steps.compute.outputs.version }} [skip ci]'
+          commit-message: ':bricks: chore(release): prepare version ${{ steps.compute.outputs.tagPrefix }}${{ steps.compute.outputs.version }} [skip ci]'
           labels: release
           delete-branch: true
           assignees: ${{ github.event.pull_request.merged_by.login }}

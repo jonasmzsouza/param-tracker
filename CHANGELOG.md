@@ -8,32 +8,39 @@ The format follows the conventions of Conventional Commits(https://www.conventio
 ## 5.0.0
 
 ### 💥 Breaking Changes
+
 - Architecture to micro-kernel with modular handlers (#29)
 
 ## 4.0.1
 
 ### 📚 Documentation
+
 - Update README.md with lifecycle control section (#27)
 
 ## 4.0.0
 
 ### 💥 Breaking Changes
+
 - Add full lifecycle, event manager, and SPA support (#25)
 
 ## 3.1.1
 
 ### 🐛 Fixes
+
 - Add conditional in the tag create step in the workflow (#23)
 
 ### 📚 Documentation
+
 - Update the README.md file in the demos folder (#22)
 
 ## 3.1.0
 
 ### ✨ Features
+
 - Enhance origin validation, add context menu propagation, caching and advanced demos (#20)
 
 ### 🤖 CI
+
 - Migrate to PR-based release workflow using create-pull-request (#19)
 
 ## ⏪ 3.0.2

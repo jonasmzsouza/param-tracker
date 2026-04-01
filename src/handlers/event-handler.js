@@ -20,7 +20,7 @@ export function createEventHandler(instance) {
 
     /**
      * Remove all event listeners that have been registered and tracked on this instance.
-     * 
+     *
      * @returns {void}
      */
     removeAllListeners() {
@@ -47,8 +47,8 @@ export function createEventHandler(instance) {
      * @returns {void}
      */
     bindEvents() {
-      this.addListener(document, "click", this.handleDocumentClick);
-      this.addListener(document, "contextmenu", this.handleContextMenu);
+      this.addListener(document, 'click', this.handleDocumentClick);
+      this.addListener(document, 'contextmenu', this.handleContextMenu);
     },
 
     // =========================
@@ -73,7 +73,7 @@ export function createEventHandler(instance) {
 
       const target = event.target;
 
-      const linkElement = target.closest("a");
+      const linkElement = target.closest('a');
       const buttonElement = target.closest("button, input[type='submit']");
 
       // LINK (priority)
@@ -84,7 +84,7 @@ export function createEventHandler(instance) {
 
       // FORM
       if (buttonElement) {
-        const form = buttonElement.closest("form");
+        const form = buttonElement.closest('form');
         if (!form) return;
 
         const isAcceptedForm = instance.config.form.acceptFormIds.some((id) =>
@@ -108,7 +108,7 @@ export function createEventHandler(instance) {
     handleContextMenu(event) {
       if (!event.target.closest) return;
 
-      const linkElement = event.target.closest("a");
+      const linkElement = event.target.closest('a');
       if (!linkElement || !instance.shouldHandleLink(linkElement)) return;
 
       try {
@@ -119,9 +119,7 @@ export function createEventHandler(instance) {
         // Only handle accepted origins
         if (
           !instance.isAcceptedOrigin(origin) ||
-          instance.config.link.ignorePathnames.some((p) =>
-            pathname.includes(p)
-          )
+          instance.config.link.ignorePathnames.some((p) => pathname.includes(p))
         ) {
           return;
         }
@@ -139,7 +137,7 @@ export function createEventHandler(instance) {
           linkElement.href = href;
         }
       } catch (err) {
-        console.warn("[ParamTracker] contextmenu error:", err);
+        console.warn('[ParamTracker] contextmenu error:', err);
       }
     },
   };

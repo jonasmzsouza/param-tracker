@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -18,17 +18,18 @@
       >Accepted Origin [<a href="https://example.com" class="no-track">example.com</a>], but Ignored
       Class</span
     ><br />
-    <a href="assets/a-sample-pdf-file.pdf"  target="_blank" rel="noopener noreferrer">Ignored File</a><br />
+    <a href="assets/a-sample-pdf-file.pdf" target="_blank" rel="noopener noreferrer">Ignored File</a
+    ><br />
 
     <script src="../dist/tracker.min.js"></script>
     <script>
       const tracker = new ParamTracker({
         link: {
-          acceptOrigins: ["example.com"],
-          ignoreClasses: ["no-track"],
-          ignorePathnames: ["/admin/"],
-          ignoreProtocols: ["url:"]
-        }
+          acceptOrigins: ['example.com'],
+          ignoreClasses: ['no-track'],
+          ignorePathnames: ['/admin/'],
+          ignoreProtocols: ['url:'],
+        },
       }).init();
     </script>
 
@@ -56,7 +57,9 @@
           default).
         </li>
         <li>
-          📄 Extra: <code>isFileUrl</code> — is an internal function that checks if the link is a file based on whether it ends with an extension, thus preventing parameters from being propagated.
+          📄 Extra: <code>isFileUrl</code> — is an internal function that checks if the link is a
+          file based on whether it ends with an extension, thus preventing parameters from being
+          propagated.
         </li>
       </ul>
       This ensures only relevant, trackable links propagate UTM and custom parameters.
@@ -67,9 +70,9 @@
     <hr />
 
     <script>
-      document.getElementById("params").textContent = window.location.search
+      document.getElementById('params').textContent = window.location.search
         ? window.location.search
-        : "None";
+        : 'None';
     </script>
   </body>
 </html>

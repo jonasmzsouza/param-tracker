@@ -1,4 +1,3 @@
-
 /**
  * Attempt to smoothly scroll the element referenced by the current URL hash into view.
  *
@@ -28,7 +27,7 @@ export function restoreScrollHash() {
     const el = document.querySelector(hash);
 
     if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+      el.scrollIntoView({ behavior: 'smooth' });
       return;
     }
 

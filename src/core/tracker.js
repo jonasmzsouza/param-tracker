@@ -1,9 +1,9 @@
-import { createDOMObserverHandler } from "../handlers/dom-observer-handler.js";
-import { createEventHandler } from "../handlers/event-handler.js";
-import { createFormHandler } from "../handlers/form-handler.js";
-import { createLinkHandler } from "../handlers/link-handler.js";
-import { buildConfig } from "./config.js";
-import { createLifecycle } from "./lifecycle.js";
+import { createDOMObserverHandler } from '../handlers/dom-observer-handler.js';
+import { createEventHandler } from '../handlers/event-handler.js';
+import { createFormHandler } from '../handlers/form-handler.js';
+import { createLinkHandler } from '../handlers/link-handler.js';
+import { buildConfig } from './config.js';
+import { createLifecycle } from './lifecycle.js';
 
 class ParamTracker {
   /**
@@ -35,7 +35,7 @@ class ParamTracker {
          * Example: ["example.com", "another.com"]
          * Note: subdomains are accepted automatically (e.g., *.example.com).
          */
-        acceptOrigins: [window?.location?.hostname?.toLowerCase() || ""],
+        acceptOrigins: [window?.location?.hostname?.toLowerCase() || ''],
 
         /**
          * List of URL pathnames where tracking should be disabled.
@@ -56,7 +56,15 @@ class ParamTracker {
          * Example: ["mailto:", "tel:", "ftp:"]
          */
         ignoreProtocols: [
-          "mailto:", "tel:", "sms:", "file:", "blob:", "data:", "ftp:", "ftps:", "javascript:"
+          'mailto:',
+          'tel:',
+          'sms:',
+          'file:',
+          'blob:',
+          'data:',
+          'ftp:',
+          'ftps:',
+          'javascript:',
         ],
 
         /**
@@ -81,7 +89,12 @@ class ParamTracker {
          * Example: ["utm_source", "utm_medium", "utm_campaign", "ref"]
          */
         includeParams: [
-          "utm_source", "utm_medium", "utm_campaign", "utm_id", "utm_term", "utm_content"
+          'utm_source',
+          'utm_medium',
+          'utm_campaign',
+          'utm_id',
+          'utm_term',
+          'utm_content',
         ],
 
         /**
@@ -114,7 +127,6 @@ class ParamTracker {
     Object.assign(this, createEventHandler(this));
     Object.assign(this, createDOMObserverHandler(this));
   }
-
 }
 
 export { ParamTracker };

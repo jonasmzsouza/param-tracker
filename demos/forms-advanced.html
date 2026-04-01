@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -18,17 +18,17 @@
     <script src="../dist/tracker.min.js"></script>
     <script>
       const tracker = new ParamTracker({
-        form: { acceptFormIds: ["signupForm"] },
+        form: { acceptFormIds: ['signupForm'] },
         link: {
-          includeParams: ["ref", "promo"],
-          excludeParams: ["temp"]
-        }
+          includeParams: ['ref', 'promo'],
+          excludeParams: ['temp'],
+        },
       }).init();
 
-      document.getElementById("signupForm").addEventListener("submit", (e) => {
+      document.getElementById('signupForm').addEventListener('submit', (e) => {
         e.preventDefault();
         const params = new URLSearchParams(new FormData(e.target));
-        alert("Params included in form:\n" + params.toString());
+        alert('Params included in form:\n' + params.toString());
       });
     </script>
 
@@ -45,9 +45,9 @@
     <hr />
 
     <script>
-      document.getElementById("params").textContent = window.location.search
+      document.getElementById('params').textContent = window.location.search
         ? window.location.search
-        : "None";
+        : 'None';
     </script>
   </body>
 </html>

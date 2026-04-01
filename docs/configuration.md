@@ -23,8 +23,8 @@ Example:
 ```javascript
 new ParamTracker({
   link: {
-    excludeParams: ["s"]
-  }
+    excludeParams: ['s'],
+  },
 });
 ```
 
@@ -116,8 +116,8 @@ Defines which forms should automatically receive URL parameters as hidden inputs
 ```javascript
 new ParamTracker({
   form: {
-    acceptFormIds: ["contactForm", "leadForm"]
-  }
+    acceptFormIds: ['contactForm', 'leadForm'],
+  },
 });
 ```
 
@@ -299,8 +299,8 @@ Example:
 ```javascript
 new ParamTracker({
   link: {
-    includeParams: ["promo", "ref"]
-  }
+    includeParams: ['promo', 'ref'],
+  },
 });
 ```
 

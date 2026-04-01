@@ -1,54 +1,55 @@
-import { resolveRootDomain } from "../domain/resolve-root-domain.js";
-import { mergeUnique, sanitizeDomains } from "../utils/sanitize.js";
+import { resolveRootDomain } from '../domain/resolve-root-domain.js';
+import { mergeUnique, sanitizeDomains } from '../utils/sanitize.js';
 
 /**
-* Deeply validates and merges configuration objects.
-* Ensures all expected arrays exist and are sanitized.
-* @param 
-* @param {object} defaults
-* @param {object} customConfig
-*/
+ * Deeply validates and merges configuration objects.
+ * Ensures all expected arrays exist and are sanitized.
+ * @param
+ * @param {object} defaults
+ * @param {object} customConfig
+ */
 export function buildConfig(defaults, customConfig = {}) {
   // =========================
   // VALIDATE DEFAULTS (strict)
   // =========================
-  if (!defaults || typeof defaults !== "object" || Array.isArray(defaults)) {
-    throw new Error("[ParamTracker] buildConfig: defaults must be a valid object");
+  if (!defaults || typeof defaults !== 'object' || Array.isArray(defaults)) {
+    throw new Error(
+      '[ParamTracker] buildConfig: defaults must be a valid object'
+    );
   }
 
   if (!defaults.form || !defaults.link) {
-    throw new Error("[ParamTracker] Invalid defaults structure");
+    throw new Error('[ParamTracker] Invalid defaults structure');
   }
 
   // =========================
   // VALIDATE CUSTOM CONFIG (lenient)
   // =========================
   const safeCustom =
-    typeof customConfig === "object" &&
-      customConfig !== null &&
-      !Array.isArray(customConfig)
+    typeof customConfig === 'object' &&
+    customConfig !== null &&
+    !Array.isArray(customConfig)
       ? customConfig
       : {};
 
   const safeCustomForm =
-    typeof safeCustom.form === "object" &&
-      safeCustom.form !== null &&
-      !Array.isArray(safeCustom.form)
+    typeof safeCustom.form === 'object' &&
+    safeCustom.form !== null &&
+    !Array.isArray(safeCustom.form)
       ? safeCustom.form
       : {};
 
   const safeCustomLink =
-    typeof safeCustom.link === "object" &&
-      safeCustom.link !== null &&
-      !Array.isArray(safeCustom.link)
+    typeof safeCustom.link === 'object' &&
+    safeCustom.link !== null &&
+    !Array.isArray(safeCustom.link)
       ? safeCustom.link
       : {};
 
   // =========================
   // HELPERS (type guards)
   // =========================
-  const ensureArray = (value) =>
-    Array.isArray(value) ? value : [];
+  const ensureArray = (value) => (Array.isArray(value) ? value : []);
 
   // =========================
   // MERGE CONFIG
@@ -113,16 +114,11 @@ export function buildConfig(defaults, customConfig = {}) {
   // =========================
   // DOMAIN NORMALIZATION
   // =========================
-  merged.link.acceptOrigins = sanitizeDomains(
-    merged.link.acceptOrigins
-  );
+  merged.link.acceptOrigins = sanitizeDomains(merged.link.acceptOrigins);
 
-  merged.link.acceptOrigins =
-    merged.link.acceptOrigins.map(resolveRootDomain);
+  merged.link.acceptOrigins = merged.link.acceptOrigins.map(resolveRootDomain);
 
-  merged.link.acceptOrigins = [
-    ...new Set(merged.link.acceptOrigins),
-  ];
+  merged.link.acceptOrigins = [...new Set(merged.link.acceptOrigins)];
 
   return merged;
 }

@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 
 services:
   traefik:
@@ -8,8 +8,8 @@ services:
       - --providers.docker=true
       - --entrypoints.web.address=:80
     ports:
-      - "80:80"    # HTTP
-      - "8080:8080" # Traefik dashboard (dev only)
+      - '80:80' # HTTP
+      - '8080:8080' # Traefik dashboard (dev only)
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: unless-stopped
@@ -17,8 +17,8 @@ services:
   tracker:
     build: .
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.tracker.rule=Host(`tracker.local`)"
-      - "traefik.http.routers.tracker.entrypoints=web"
-      - "traefik.http.services.tracker.loadbalancer.server.port=80"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.tracker.rule=Host(`tracker.local`)'
+      - 'traefik.http.routers.tracker.entrypoints=web'
+      - 'traefik.http.services.tracker.loadbalancer.server.port=80'
     restart: unless-stopped

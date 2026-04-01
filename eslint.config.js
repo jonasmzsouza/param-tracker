@@ -1,8 +1,8 @@
 // eslint.config.js
-import js from "@eslint/js";
-import prettierConfig from "eslint-config-prettier";
-import pluginImport from "eslint-plugin-import";
-import globals from "globals";
+import js from '@eslint/js';
+import prettierConfig from 'eslint-config-prettier';
+import pluginImport from 'eslint-plugin-import';
+import globals from 'globals';
 
 export default [
   js.configs.recommended,
@@ -11,32 +11,39 @@ export default [
   // Browser (src)
   // =========================
   {
-    files: ["src/**/*.js"],
+    files: ['src/**/*.js'],
     plugins: {
       import: pluginImport,
     },
     languageOptions: {
-      ecmaVersion: "latest",
-      sourceType: "module",
+      ecmaVersion: 'latest',
+      sourceType: 'module',
       globals: {
         ...globals.browser,
 
         // UMD / AMD / CJS globals
-        module: "readonly",
-        define: "readonly",
+        module: 'readonly',
+        define: 'readonly',
       },
     },
     rules: {
-      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
-      "no-console": "off",
-      "prefer-const": "warn",
-      "eqeqeq": ["error", "always"],
-      "curly": ["error", "all"],
-      "import/order": [
-        "warn",
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      'no-console': 'off',
+      'prefer-const': 'warn',
+      eqeqeq: ['error', 'always'],
+      curly: ['error', 'all'],
+      'import/order': [
+        'warn',
         {
-          groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
-          alphabetize: { order: "asc", caseInsensitive: true },
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            'parent',
+            'sibling',
+            'index',
+          ],
+          alphabetize: { order: 'asc', caseInsensitive: true },
         },
       ],
     },
@@ -46,10 +53,10 @@ export default [
   // Node (build / scripts)
   // =========================
   {
-    files: ["build.mjs", "*.config.js", "*.mjs"],
+    files: ['build.mjs', '*.config.js', '*.mjs'],
     languageOptions: {
-      ecmaVersion: "latest",
-      sourceType: "module",
+      ecmaVersion: 'latest',
+      sourceType: 'module',
       globals: {
         ...globals.node,
       },
@@ -57,6 +64,6 @@ export default [
   },
   prettierConfig,
   {
-    ignores: ["dist/**/*.js"],
+    ignores: ['dist/**/*.js'],
   },
 ];

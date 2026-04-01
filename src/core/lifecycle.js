@@ -1,4 +1,4 @@
-import { restoreScrollHash } from "../handlers/dom-utils.js";
+import { restoreScrollHash } from '../handlers/dom-utils.js';
 
 export function createLifecycle(instance) {
   return {

@@ -1,7 +1,7 @@
 // release.config.js
 export default {
   tag: {
-    prefix: "",
+    prefix: '',
   },
 
   changelog: {
@@ -9,9 +9,9 @@ export default {
   },
 
   releaseRules: {
-    docs: "patch",
-    ci: "patch",
-    refactor: "patch",
-    perf: "patch",
-  }
+    docs: 'patch',
+    ci: 'patch',
+    refactor: 'patch',
+    perf: 'patch',
+  },
 };

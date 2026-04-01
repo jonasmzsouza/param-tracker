@@ -1,5 +1,4 @@
 menu:
-
   - title: Home
     url: /
 
@@ -10,7 +9,6 @@ menu:
     url: /demos/
 
 docs:
-
   - title: Architecture
     file: architecture.md
 

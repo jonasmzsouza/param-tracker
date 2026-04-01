@@ -1,25 +1,24 @@
-import { sanitizeAndMergeParams } from "../utils/params.js";
-import { isFileUrl } from "../utils/url.js";
+import { sanitizeAndMergeParams } from '../utils/params.js';
+import { isFileUrl } from '../utils/url.js';
 
 export function createLinkHandler(instance) {
   return {
-
     /**
      * Sanitizes existing links in the HTML
      * @returns {void}
      */
     sanitizeLinks() {
-      document.querySelectorAll("a[href]").forEach((link) => {
+      document.querySelectorAll('a[href]').forEach((link) => {
         if (!this.shouldHandleLink(link)) return;
 
         const url = new URL(link.href);
-        const hash = url.hash || "";
+        const hash = url.hash || '';
 
         const sanitized = sanitizeAndMergeParams(
           instance.config,
           url.origin + url.pathname,
           url.search,
-          ""
+          ''
         );
 
         const finalHref = sanitized + hash;
@@ -41,7 +40,7 @@ export function createLinkHandler(instance) {
         manageAttributes,
       } = instance.config.link;
 
-      const linkHref = linkElement.getAttribute("href") || "";
+      const linkHref = linkElement.getAttribute('href') || '';
 
       // Ignore file links
       if (isFileUrl(linkHref)) return false;
@@ -51,7 +50,7 @@ export function createLinkHandler(instance) {
 
       // Ignore links with specified classes
       if (ignoreClasses.some((cls) => linkElement.classList.contains(cls)))
-        return false;      
+        return false;
 
       // Ignore links that have specific manageAttributes with values in ignoreAttrValues
       for (const attr of manageAttributes) {
@@ -62,11 +61,10 @@ export function createLinkHandler(instance) {
       return true;
     },
 
-
     /**
      * Verify that the origin is accepted
      * Accepts both the main domain and subdomains (*.domain.com)
-     * @param {String} origin 
+     * @param {String} origin
      * @returns {bool}
      */
     isAcceptedOrigin(origin) {
@@ -75,7 +73,7 @@ export function createLinkHandler(instance) {
       }
 
       try {
-        const normalizedOrigin = origin.startsWith("http")
+        const normalizedOrigin = origin.startsWith('http')
           ? origin
           : `https://${origin}`;
 
@@ -84,8 +82,7 @@ export function createLinkHandler(instance) {
 
         const isAccepted = allowedDomains.some(
           (baseDomain) =>
-            hostname === baseDomain ||
-            hostname.endsWith(`.${baseDomain}`)
+            hostname === baseDomain || hostname.endsWith(`.${baseDomain}`)
         );
 
         instance._originCache.set(origin, isAccepted);
@@ -100,21 +97,19 @@ export function createLinkHandler(instance) {
      * Handle clicks on links.
      * Useful for checking whether the element's link is to the source website.
      * Call functions with specific responsibilities and redirect the link.
-     * @param {Event} event 
-     * @param {HTMLElement} linkElement 
+     * @param {Event} event
+     * @param {HTMLElement} linkElement
      */
     handleLinkClick(event, linkElement) {
       const origin = linkElement.origin;
       const pathname = linkElement.pathname;
-      const target = linkElement.getAttribute("target");
+      const target = linkElement.getAttribute('target');
       const hash = linkElement.hash;
       const page = origin + pathname;
 
       if (
         this.isAcceptedOrigin(origin) &&
-        !this.config.link.ignorePathnames.some((p) =>
-          pathname.includes(p)
-        )
+        !this.config.link.ignorePathnames.some((p) => pathname.includes(p))
       ) {
         const { href, isHashSymbolPresent } = this.generateHref(
           linkElement,
@@ -151,14 +146,14 @@ export function createLinkHandler(instance) {
         instance.config,
         baseUrl,
         linkUrl.search,
-        window.location.search,
+        window.location.search
       );
 
       // Ensures that the hash is maintained (if it exists)
       const hasHash = !!hash;
 
       return {
-        href: merged + (hasHash ? hash : ""),
+        href: merged + (hasHash ? hash : ''),
         isHashSymbolPresent: hasHash,
       };
     },
@@ -175,18 +170,17 @@ export function createLinkHandler(instance) {
     handleLinkRedirect(event, isHashSymbolPresent, href, page, hash, target) {
       event.preventDefault();
 
-      const current =
-        window.location.origin + window.location.pathname;
+      const current = window.location.origin + window.location.pathname;
 
       if (isHashSymbolPresent && page === current && hash) {
         document.querySelector(hash)?.scrollIntoView({
-          behavior: "smooth",
+          behavior: 'smooth',
         });
         return;
       }
 
-      target === "_blank"
-        ? window.open(href, "_blank")
+      target === '_blank'
+        ? window.open(href, '_blank')
         : (window.location.href = href);
     },
   };
