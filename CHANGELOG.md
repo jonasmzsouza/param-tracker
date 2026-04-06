@@ -9,55 +9,60 @@ The format follows the conventions of Conventional Commits(https://www.conventio
 
 ### 💥 Breaking Changes
 
-- Architecture to micro-kernel with modular handlers (#29)
+- Architecture to micro-kernel with modular handlers ([#29](https://github.com/jonasmzsouza/param-tracker/pull/29))
 
 ## 4.0.1
 
 ### 📚 Documentation
 
-- Update README.md with lifecycle control section (#27)
+- Update README.md with lifecycle control section ([#27](https://github.com/jonasmzsouza/param-tracker/pull/27))
 
 ## 4.0.0
 
 ### 💥 Breaking Changes
 
-- Add full lifecycle, event manager, and SPA support (#25)
+- Add full lifecycle, event manager, and SPA support ([#25](https://github.com/jonasmzsouza/param-tracker/pull/25))
 
 ## 3.1.1
 
 ### 🐛 Fixes
 
-- Add conditional in the tag create step in the workflow (#23)
+- Add conditional in the tag create step in the workflow ([#23](https://github.com/jonasmzsouza/param-tracker/pull/23))
 
 ### 📚 Documentation
 
-- Update the README.md file in the demos folder (#22)
+- Update the README.md file in the demos folder ([#22](https://github.com/jonasmzsouza/param-tracker/pull/22))
 
 ## 3.1.0
 
 ### ✨ Features
 
-- Enhance origin validation, add context menu propagation, caching and advanced demos (#20)
+- Enhance origin validation, add context menu propagation, caching and advanced demos ([#20](https://github.com/jonasmzsouza/param-tracker/pull/20))
 
 ### 🤖 CI
 
-- Migrate to PR-based release workflow using create-pull-request (#19)
+- Migrate to PR-based release workflow using create-pull-request ([#19](https://github.com/jonasmzsouza/param-tracker/pull/19))
 
-## ⏪ 3.0.2
+## 3.0.2
 
-### ⏪ Reverts
+### 🔧 Chores
 
-- Revert ":robot: ci: add automated release and npm token rotation workflows ([#14](https://github.com/jonasmzsouza/param-tracker/issues/14))" ([#15](https://github.com/jonasmzsouza/param-tracker/issues/15)) ([ba3acb3](https://github.com/jonasmzsouza/param-tracker/commit/ba3acb321faa647384aec65710ce8c85b87a9901))
+- Trigger release workflow ([#17](https://github.com/jonasmzsouza/param-tracker/pull/17))
 
----
+### 🤖 CI
+
+- Add automated release and npm token rotation workflows ([#16](https://github.com/jonasmzsouza/param-tracker/pull/16))
+- Add automated release and npm token rotation workflows ([#14](https://github.com/jonasmzsouza/param-tracker/pull/14))
+
+### 📦 Other
+
+- Revert ":robot: ci: add automated release and npm token rotation workflows " ([#14](https://github.com/jonasmzsouza/param-tracker/pull/14), [#15](https://github.com/jonasmzsouza/param-tracker/pull/15))
 
 ## 🐞 3.0.1
 
 ### 🐛 Fixes
 
 - Fixed `Uncaught ReferenceError: isFileUrl is not defined` by prefixing with `this.` inside the class scope.
-
----
 
 ## 💥 3.0.0
 
@@ -80,8 +85,6 @@ The format follows the conventions of Conventional Commits(https://www.conventio
 ### 📄 Documentation
 
 - Updated README with new configuration table and usage examples.
-
----
 
 ## ✨ 2.1.0
 
@@ -110,15 +113,11 @@ The format follows the conventions of Conventional Commits(https://www.conventio
 - Included automatic banner with version and license information
 - Updated tracker.js, tracker.cjs.js, and tracker.esm.js with new build outputs
 
----
-
 ## 🐞 2.0.1
 
 ### 🐛 Fixes
 
 - Avoids duplication of parameters by the addParamsToForm function if a field with the same name and value already exists in the form.
-
----
 
 ## 🚀 2.0.0
 
@@ -134,15 +133,11 @@ The format follows the conventions of Conventional Commits(https://www.conventio
 - Enhanced parameter sanitization and event binding
 - Removed global functions in favor of instance methods
 
----
-
 ## 🔁 1.4.1
 
 ### ♻️ Refactor
 
 - Removed handleFormSubmit function and update form submission handling to use manual click events.
-
----
 
 ## 🧩 1.4.0
 
@@ -150,23 +145,17 @@ The format follows the conventions of Conventional Commits(https://www.conventio
 
 - Addition of essential configuration files (`package.json`, `.eslintrc.json`, `.prettierrc`, etc.) to standardize code style and quality.
 
----
-
 ## 🔁 1.3.0
 
 ### ♻️ Refactor
 
 - Update to URL parameter handling to normalize malformed queries and preserve UTM parameters
 
----
-
 ## 🐞 1.2.3
 
 ### 🐛 Fixes
 
 - Fixed the use of link element parameters when they do not exist, improving script stability.
-
----
 
 ## ✨ 1.2.0
 
@@ -177,8 +166,6 @@ The format follows the conventions of Conventional Commits(https://www.conventio
 ### ♻️ Refactor
 
 - Several internal improvements to the code, including adjustments to accepted sources, class ignorance, and optimizations.
-
----
 
 ## 🚀 1.0.0
 
@@ -195,15 +182,11 @@ The format follows the conventions of Conventional Commits(https://www.conventio
 - Separation of validations and handlers into dedicated functions
 - Inclusion of code block to ensure execution after DOMContentLoaded
 
----
-
 ## ✨ 0.2.0
 
 ### ✨ Features
 
 - Propagated URL parameters and handle anchors/hash in all links
-
----
 
 ## 🎉 0.1.0
 
@@ -219,5 +202,3 @@ The format follows the conventions of Conventional Commits(https://www.conventio
 - **Versioning:** SemVer (`MAJOR.MINOR.PATCH`)
 - **Author:** Jonas Souza (https://github.com/jonasmzsouza)
 - **Repository:** Link Tracking (https://github.com/jonasmzsouza/param-tracker)
-
----
