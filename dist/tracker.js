@@ -1,4 +1,4 @@
-/*! ParamTracker 5.0.0 | MIT License | (c) Jonas Souza 2023-2026 | https://github.com/jonasmzsouza/param-tracker */
+/*! ParamTracker 5.0.1 | MIT License | (c) Jonas Souza 2023-2026 | https://github.com/jonasmzsouza/param-tracker */
 (() => {
   // src/handlers/dom-observer-handler.js
   function createDOMObserverHandler(instance) {
@@ -51,7 +51,7 @@
       },
       /**
        * Remove all event listeners that have been registered and tracked on this instance.
-       * 
+       *
        * @returns {void}
        */
       removeAllListeners() {
@@ -131,9 +131,7 @@
           const origin = linkElement.origin;
           const pathname = linkElement.pathname;
           const hash = linkElement.hash;
-          if (!instance.isAcceptedOrigin(origin) || instance.config.link.ignorePathnames.some(
-            (p) => pathname.includes(p)
-          )) {
+          if (!instance.isAcceptedOrigin(origin) || instance.config.link.ignorePathnames.some((p) => pathname.includes(p))) {
             return;
           }
           const { href } = instance.generateHref(
@@ -278,9 +276,7 @@
   }
   function removeURLParams(config, search) {
     const urlParams = new URLSearchParams(search);
-    config.link.excludeParams.forEach(
-      (param) => urlParams.delete(param)
-    );
+    config.link.excludeParams.forEach((param) => urlParams.delete(param));
     return urlParams.toString() ? "?" + urlParams.toString() : "";
   }
 
@@ -351,10 +347,10 @@
           manageAttributes
         } = instance.config.link;
         const linkHref = linkElement.getAttribute("href") || "";
+        if (isFileUrl(linkHref)) return false;
+        if (ignoreProtocols.some((p) => linkHref.startsWith(p))) return false;
         if (ignoreClasses.some((cls) => linkElement.classList.contains(cls)))
           return false;
-        if (ignoreProtocols.some((p) => linkHref.startsWith(p))) return false;
-        if (isFileUrl(linkHref)) return false;
         for (const attr of manageAttributes) {
           const val = linkElement.getAttribute(attr);
           if (val && ignoreAttrValues.includes(val)) return false;
@@ -364,7 +360,7 @@
       /**
        * Verify that the origin is accepted
        * Accepts both the main domain and subdomains (*.domain.com)
-       * @param {String} origin 
+       * @param {String} origin
        * @returns {bool}
        */
       isAcceptedOrigin(origin) {
@@ -389,8 +385,8 @@
        * Handle clicks on links.
        * Useful for checking whether the element's link is to the source website.
        * Call functions with specific responsibilities and redirect the link.
-       * @param {Event} event 
-       * @param {HTMLElement} linkElement 
+       * @param {Event} event
+       * @param {HTMLElement} linkElement
        */
       handleLinkClick(event, linkElement) {
         const origin = linkElement.origin;
@@ -398,9 +394,7 @@
         const target = linkElement.getAttribute("target");
         const hash = linkElement.hash;
         const page = origin + pathname;
-        if (this.isAcceptedOrigin(origin) && !this.config.link.ignorePathnames.some(
-          (p) => pathname.includes(p)
-        )) {
+        if (this.isAcceptedOrigin(origin) && !this.config.link.ignorePathnames.some((p) => pathname.includes(p))) {
           const { href, isHashSymbolPresent } = this.generateHref(
             linkElement,
             origin,
@@ -957,7 +951,9 @@
   // src/core/config.js
   function buildConfig(defaults, customConfig = {}) {
     if (!defaults || typeof defaults !== "object" || Array.isArray(defaults)) {
-      throw new Error("[ParamTracker] buildConfig: defaults must be a valid object");
+      throw new Error(
+        "[ParamTracker] buildConfig: defaults must be a valid object"
+      );
     }
     if (!defaults.form || !defaults.link) {
       throw new Error("[ParamTracker] Invalid defaults structure");
@@ -1014,13 +1010,9 @@
         )
       }
     };
-    merged.link.acceptOrigins = sanitizeDomains(
-      merged.link.acceptOrigins
-    );
+    merged.link.acceptOrigins = sanitizeDomains(merged.link.acceptOrigins);
     merged.link.acceptOrigins = merged.link.acceptOrigins.map(resolveRootDomain);
-    merged.link.acceptOrigins = [
-      ...new Set(merged.link.acceptOrigins)
-    ];
+    merged.link.acceptOrigins = [...new Set(merged.link.acceptOrigins)];
     return merged;
   }
 
