@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -21,7 +21,7 @@
     <script src="../dist/tracker.min.js"></script>
     <script>
       const tracker = new ParamTracker({
-        link: { acceptOrigins: ["example.com"] }
+        link: { acceptOrigins: ['example.com'] },
       }).init();
     </script>
 
@@ -38,9 +38,9 @@
     <hr />
 
     <script>
-      document.getElementById("params").textContent = window.location.search
+      document.getElementById('params').textContent = window.location.search
         ? window.location.search
-        : "None";
+        : 'None';
     </script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-import { normalizeQueryString } from "./url.js";
+import { normalizeQueryString } from './url.js';
 
 /**
  * Performs a safe merge between the current page and link parameters,
@@ -9,12 +9,17 @@ import { normalizeQueryString } from "./url.js";
  * @param {Array<string>} excludeParams - list of parameters to remove
  * @returns {string} final URL (baseUrl + ‘?’ + mergedParams) or baseUrl if empty
  */
-export function sanitizeAndMergeParams(config, baseUrl, rawLinkQuery = "", rawCurrentQuery = "") {
+export function sanitizeAndMergeParams(
+  config,
+  baseUrl,
+  rawLinkQuery = '',
+  rawCurrentQuery = ''
+) {
   try {
     const linkSearch = normalizeQueryString(rawLinkQuery);
 
     const currentSearch = new URLSearchParams(
-      (rawCurrentQuery || "").replace(/^[?&]+/, "")
+      (rawCurrentQuery || '').replace(/^[?&]+/, '')
     );
 
     // First, add the link parameters to currentSearch,
@@ -47,9 +52,7 @@ export function sanitizeAndMergeParams(config, baseUrl, rawLinkQuery = "", rawCu
 export function removeURLParams(config, search) {
   const urlParams = new URLSearchParams(search);
 
-  config.link.excludeParams.forEach((param) =>
-    urlParams.delete(param)
-  );
+  config.link.excludeParams.forEach((param) => urlParams.delete(param));
 
-  return urlParams.toString() ? "?" + urlParams.toString() : "";
+  return urlParams.toString() ? '?' + urlParams.toString() : '';
 }

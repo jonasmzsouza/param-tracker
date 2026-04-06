@@ -1,3 +1,3 @@
-import { ParamTracker } from "./core/tracker.js";
+import { ParamTracker } from './core/tracker.js';
 
 window.ParamTracker = ParamTracker;

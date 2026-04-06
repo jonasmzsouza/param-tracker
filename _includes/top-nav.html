@@ -1,0 +1,11 @@
+<nav class="top-nav">
+  <ul>
+    {% for item in site.data.navigation.menu %}
+      <li>
+        <a href="{{ item.url | relative_url }}" class="{% if page.url == item.url %}active{% endif %}">
+          {{ item.title }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</nav>

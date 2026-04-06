@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -17,9 +17,9 @@
     <script>
       const tracker = new ParamTracker({
         link: {
-          manageAttributes: ["role", "data-filter"],
-          ignoreAttrValues: ["button", "any"]
-        }
+          manageAttributes: ['role', 'data-filter'],
+          ignoreAttrValues: ['button', 'any'],
+        },
       }).init();
     </script>
 
@@ -37,9 +37,9 @@
     <hr />
 
     <script>
-      document.getElementById("params").textContent = window.location.search
+      document.getElementById('params').textContent = window.location.search
         ? window.location.search
-        : "None";
+        : 'None';
     </script>
   </body>
 </html>

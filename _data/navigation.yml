@@ -1,0 +1,9 @@
+menu:
+  - title: Home
+    url: /
+
+  - title: Documentation
+    url: /docs/
+
+  - title: Demos
+    url: /demos/

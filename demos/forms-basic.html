@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -18,15 +18,18 @@
     <script src="../dist/tracker.min.js"></script>
     <script>
       const tracker = new ParamTracker({
-        form: { acceptFormIds: ["leadForm"] }
+        form: { acceptFormIds: ['leadForm'] },
       });
 
-      document.getElementById("leadForm").addEventListener("submit", (e) => {
-        e.preventDefault();
-        alert(
-          "Form submitted with params:\n" + new URLSearchParams(new FormData(e.target)).toString()
-        );
-      }).init();
+      document
+        .getElementById('leadForm')
+        .addEventListener('submit', (e) => {
+          e.preventDefault();
+          alert(
+            'Form submitted with params:\n' + new URLSearchParams(new FormData(e.target)).toString()
+          );
+        })
+        .init();
     </script>
 
     <!-- Helpers -->
@@ -43,9 +46,9 @@
     <hr />
 
     <script>
-      document.getElementById("params").textContent = window.location.search
+      document.getElementById('params').textContent = window.location.search
         ? window.location.search
-        : "None";
+        : 'None';
     </script>
   </body>
 </html>

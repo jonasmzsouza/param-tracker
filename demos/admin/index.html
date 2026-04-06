@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,8 +8,8 @@
   <body>
     <h1>ParamTracker Demo - Admin</h1>
     <p>
-      This is the <strong>Admin index.html</strong>. If you arrived here without tracking parameters, this
-      confirms that the tracker is working as expected.
+      This is the <strong>Admin index.html</strong>. If you arrived here without tracking
+      parameters, this confirms that the tracker is working as expected.
     </p>
 
     <!-- Helpers -->
@@ -20,14 +20,14 @@
     <button onclick="goBack()">← Back to Previous Page</button>
 
     <script>
-      document.getElementById("params").textContent = window.location.search
+      document.getElementById('params').textContent = window.location.search
         ? window.location.search
-        : "None";
+        : 'None';
       function goBack() {
         if (window.history.length > 1) {
           window.history.back();
         } else {
-          window.location.href = "/demos";
+          window.location.href = '/demos';
         }
       }
     </script>

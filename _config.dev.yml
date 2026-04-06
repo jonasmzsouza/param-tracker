@@ -1,0 +1,11 @@
+livereload: true
+incremental: true
+
+title: Param Tracker
+description: Documentation for Param Tracker
+
+baseurl: ""
+url: ""
+
+# Disable github metadata for local development (no git repo in container)
+repository: ""

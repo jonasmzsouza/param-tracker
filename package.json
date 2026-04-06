@@ -19,6 +19,7 @@
   "scripts": {
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
+    "format": "prettier . --write",
     "build": "node build.mjs",
     "watch": "node build.mjs --watch",
     "test": "echo 'No tests configured yet.'",
@@ -68,7 +69,8 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "globals": "^17.0.0",
-    "release-suite": "^3.1.0"
+    "prettier": "^3.8.1",
+    "release-suite": "^3.2.1"
   },
   "dependencies": {
     "tldts": "^7.0.27"

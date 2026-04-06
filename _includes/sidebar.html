@@ -1,0 +1,16 @@
+<nav class="sidebar">
+  <input type="text" id="search" placeholder="Search docs..." />
+
+  <ul>
+    {% assign docs_pages = site.pages | where_exp: "p", "p.path contains 'docs/'" | sort: "nav_order" %}
+
+    {% for doc in docs_pages %}
+      <li>
+        <a href="{{ doc.url | relative_url }}" class="{% if doc.url == page.url %}active{% endif %}">
+          {{ doc.title }}
+        </a>
+      </li>
+    {% endfor %}
+    
+  </ul>
+</nav>

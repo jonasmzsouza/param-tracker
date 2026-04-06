@@ -1,4 +1,4 @@
-import { removeURLParams } from "../utils/params.js";
+import { removeURLParams } from '../utils/params.js';
 
 export function createFormHandler(instance) {
   return {
@@ -12,8 +12,8 @@ export function createFormHandler(instance) {
 
       const locationHash = window.location.hash;
 
-      const locationSearch = locationHash.includes("?")
-        ? "?" + locationHash.split("?")[1]
+      const locationSearch = locationHash.includes('?')
+        ? '?' + locationHash.split('?')[1]
         : window.location.search;
 
       if (!locationSearch) return;
@@ -29,8 +29,8 @@ export function createFormHandler(instance) {
         );
 
         if (!existingInput) {
-          const input = document.createElement("input");
-          input.type = "hidden";
+          const input = document.createElement('input');
+          input.type = 'hidden';
           input.name = key;
           input.value = value;
           formElement.appendChild(input);

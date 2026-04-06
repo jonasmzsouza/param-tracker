@@ -1,6 +1,6 @@
 /**
  * Sanitizes string arrays: trims, lowercases, deduplicates, and optionally ensures `:` suffix.
- * 
+ *
  * @param {Array<any>} arr
  * @param {Object} [options]
  * @param {boolean} [options.lowercase=false]
@@ -13,11 +13,11 @@ export function sanitizeStringArray(arr = [], options = {}) {
   const { lowercase = false, ensureColon = false } = options;
 
   const normalized = arr
-    .filter((item) => typeof item === "string" && item.trim() !== "")
+    .filter((item) => typeof item === 'string' && item.trim() !== '')
     .map((item) => {
       let clean = item.trim();
       if (lowercase) clean = clean.toLowerCase();
-      if (ensureColon && !clean.endsWith(":")) clean += ":";
+      if (ensureColon && !clean.endsWith(':')) clean += ':';
       return clean;
     });
 
@@ -26,15 +26,14 @@ export function sanitizeStringArray(arr = [], options = {}) {
 
 /**
  * Sanitizes and validates domain names.
- * @param {Array<string>} domains 
+ * @param {Array<string>} domains
  * @returns {Array<string>}
-*/
+ */
 export function sanitizeDomains(domains = []) {
-  const domainRegex =
-    /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)*[a-z]{2,}$/i;
+  const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)*[a-z]{2,}$/i;
 
   return domains
-    .filter((d) => typeof d === "string" && d.trim() !== "")
+    .filter((d) => typeof d === 'string' && d.trim() !== '')
     .map((d) => d.trim().toLowerCase())
     .filter((d) => domainRegex.test(d));
 }
@@ -42,7 +41,7 @@ export function sanitizeDomains(domains = []) {
 /**
  * Merges two arrays safely, removing invalid entries and duplicates.
  * Delegates normalization rules to `sanitizeStringArray`.
- * 
+ *
  * @param {Array<any>} defaultArr - Default configuration array
  * @param {Array<any>} customArr - Custom configuration array
  * @param {Object} [options] - Normalization options

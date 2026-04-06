@@ -1,9 +1,49 @@
 # 🧭 ParamTracker
 
+[![param-tracker (latest_)](https://img.shields.io/npm/v/param-tracker/latest.svg)](https://img.shields.io/npm/v/param-tracker)
+[![param-tracker (donwloads)](https://img.shields.io/npm/dy/param-tracker.svg)](https://img.shields.io/npm/dm/param-tracker)
+[![](https://data.jsdelivr.com/v1/package/npm/param-tracker/badge)](https://www.jsdelivr.com/package/npm/param-tracker)
+![bundle size](https://img.shields.io/bundlejs/size/param-tracker)
+![license](https://img.shields.io/npm/l/param-tracker)
+![build](https://img.shields.io/github/actions/workflow/status/jonasmzsouza/param-tracker/create-and-publish.yml)
+
 **ParamTracker** is a lightweight JavaScript library for intelligent manipulation of **links and forms**, preserving **UTM parameters** and removing irrelevant search parameters.  
 It now supports **ES Modules**, **CommonJS**, and **browser global (UMD)** environments — perfect for WordPress, landing pages, or any website that relies on campaign tracking.
 
 Now available for **ES Modules** _and_ **global browser usage (UMD/IIFE)** — no build tools required.
+
+---
+
+## 📚 Table of Contents
+
+- [Why ParamTracker](#-why-paramtracker)
+- [Features](#-features)
+- [Installation](#-installation)
+- [Quick Start](#-quick-start)
+- [Usage](#-usage)
+- [Lifecycle](#-lifecycle-control)
+- [Architecture](#-architecture)
+- [Configuration](#-configuration)
+- [Advanced Usage](#-advanced-usage)
+- [Build Outputs](#️-build-outputs)
+- [License](#-license)
+
+---
+
+## ❓ Why ParamTracker?
+
+Modern websites often rely on marketing attribution parameters such as UTM tags.
+
+However, these parameters are frequently lost when users navigate through internal links or submit forms.
+
+ParamTracker solves this by automatically:
+
+• preserving tracking parameters across links  
+• injecting parameters into configured forms  
+• removing irrelevant query parameters  
+• working with dynamic DOM environments (SPA frameworks)
+
+This ensures consistent campaign tracking without requiring manual URL management.
 
 ---
 
@@ -48,80 +88,6 @@ Download one the latest [releases](https://github.com/jonasmzsouza/param-tracker
 
 ---
 
-## 🧠 Usage
-
-#### 🧩 Option 1 — Browser (Global Usage)
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/param-tracker@latest/dist/tracker.min.js"></script>
-<script>
-  const tracker = new ParamTracker({
-    // Your custom settings go here
-  }).init();
-</script>
-```
-
-#### 📦 Option 2 — ES Module (Modern Apps)
-
-```js
-import { ParamTracker } from "param-tracker";
-
-const tracker = new ParamTracker({
-  // Your custom settings go here
-}).init();
-```
-
-#### 💻 Option 3 — Node.js / CommonJS
-
-```js
-const { ParamTracker } = require("param-tracker");
-
-const tracker = new ParamTracker({
-  // Your custom settings go here
-}).init();
-```
-
----
-
-## 🔄 Lifecycle Control
-
-ParamTracker now provides full lifecycle control, allowing you to initialize, refresh, and destroy the instance when needed — especially useful for SPA (React, Vue, Angular) or dynamic environments.
-
-### Methods
-
-```js
-// Config (Optional)
-const config = {}
-
-// Instance
-const tracker = new ParamTracker(config);
-
-// Initialize
-tracker.init();
-
-// Re-run link sanitization and clear internal cache
-tracker.refresh();
-
-// Remove all listeners and observers (cleanup)
-tracker.destroy();
-```
-
-**Notes**
-
-- `init()` is idempotent (safe to call multiple times)
-- `destroy()` removes all event listeners and stops DOM observation
-- `refresh()` is useful when URL parameters or DOM state changes dynamically
-
----
-
-## ⚡ Dynamic DOM Support
-
-ParamTracker automatically observes DOM changes using `MutationObserver`, ensuring that dynamically added links are also sanitized and tracked.
-
-This makes it fully compatible with modern frameworks like React, Vue, and Angular.
-
----
-
 ## ⚡ Quick Start
 
 A simple example of how to use **ParamTracker** on a website with links and forms.
@@ -154,11 +120,11 @@ For more practical examples, including advanced use cases with all configuration
       // Initialize ParamTracker with configuration
       const tracker = new ParamTracker({
         form: {
-          acceptFormIds: ["registrationForm"]
+          acceptFormIds: ['registrationForm'],
         },
         link: {
-          acceptOrigins: ["example.com"] //cross-domain
-        }
+          acceptOrigins: ['example.com'], //cross-domain
+        },
       }).init();
     </script>
   </body>
@@ -194,128 +160,138 @@ These demos illustrate how ParamTracker keeps, merges, or ignores parameters bas
 
 ---
 
-## 🧩 Configuration Options
+## 🧠 Usage
 
-| Nest     | Option             | Type       | Description                                                                                                                                                               |
-| -------- | ------------------ | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **form** | `acceptFormIds`    | `string[]` | IDs of forms that should automatically receive UTM and custom parameters.                                                                                                 |
-| **link** | `acceptOrigins`    | `string[]` | Defines which domains or subdomains are allowed for parameter propagation. Useful only across domains. Domains with the library installed are automatically detected.     |
-| **link** | `ignorePathnames`  | `string[]` | Excludes specific URL pathnames from tracking.                                                                                                                            |
-| **link** | `ignoreClasses`    | `string[]` | Ignores links that contain any of these CSS classes.                                                                                                                      |
-| **link** | `ignoreProtocols`  | `string[]` | Skips links whose URL starts with certain protocols. Some protocols already handled: `mailto:`, `tel:`, `sms:`, `file:`, `blob:`, `data:`, `ftp:`, `ftps:`, `javascript:` |
-| **link** | `ignoreAttrValues` | `string[]` | Values that, when matched, will cause the link to be ignored. Used together with `manageAttributes`.                                                                      |
-| **link** | `manageAttributes` | `string[]` | Attributes to inspect (e.g. `href`, `data-action`, `download`). If any of these attributes contain a value present in `ignoreAttrValues`, the link will be ignored.       |
-| **link** | `includeParams`    | `string[]` | Parameters to preserve or propagate (e.g. UTM parameters).                                                                                                                |
-| **link** | `excludeParams`    | `string[]` | Parameters to remove from the URL before propagation.                                                                                                                     |
+#### 🧩 Option 1 — Browser (Global Usage)
 
----
+```html
+<script src="https://cdn.jsdelivr.net/npm/param-tracker@latest/dist/tracker.min.js"></script>
+<script>
+  const tracker = new ParamTracker({
+    // Your custom settings go here
+  }).init();
+</script>
+```
 
-## 📘 Configuration Reference
-
-Each configuration key allows fine-grained control over how parameters are managed and propagated.
-
-### 🧩 `form.acceptFormIds`
-
-Defines which forms should automatically receive UTM and custom parameters.
+#### 📦 Option 2 — ES Module (Modern Apps)
 
 ```js
-new ParamTracker({
-  form: {
-    acceptFormIds: ["registrationForm", "leadForm"]
-  }
-});
+import { ParamTracker } from 'param-tracker';
+
+const tracker = new ParamTracker({
+  // Your custom settings go here
+}).init();
+```
+
+#### 💻 Option 3 — Node.js / CommonJS
+
+```js
+const { ParamTracker } = require('param-tracker');
+
+const tracker = new ParamTracker({
+  // Your custom settings go here
+}).init();
 ```
 
 ---
 
-### 🌍 `link.acceptOrigins`
+## 🔄 Lifecycle Control
 
-Specifies the list of domains and subdomains where tracking should be active. Useful only across domains. Domains with the library installed are automatically detected.
+ParamTracker now provides full lifecycle control, allowing you to initialize, refresh, and destroy the instance when needed — especially useful for SPA (React, Vue, Angular) or dynamic environments.
+
+### Methods
 
 ```js
-link: {
-  acceptOrigins: ["example.com", "another.com"],
-}
+// Config (Optional)
+const config = {};
+
+// Instance
+const tracker = new ParamTracker(config);
+
+// Initialize
+tracker.init();
+
+// Re-run link sanitization and clear internal cache
+tracker.refresh();
+
+// Remove all listeners and observers (cleanup)
+tracker.destroy();
 ```
 
-- Note: subdomains are accepted automatically (e.g., \*.example.com).
+**Notes**
+
+- `init()` is idempotent (safe to call multiple times)
+- `destroy()` removes all event listeners and stops DOM observation
+- `refresh()` is useful when URL parameters or DOM state changes dynamically
 
 ---
 
-### 🚫 `link.ignorePathnames`
+## 🏗 Architecture
 
-Excludes certain URL pathnames from parameter propagation.
+ParamTracker uses a **micro-kernel architecture with specialized handlers** to keep the core lightweight and extensible.
 
-```js
-link: {
-  ignorePathnames: ["/admin", "/private"],
-}
-```
+The core orchestrates lifecycle and configuration while dedicated handlers manage:
 
----
+• event delegation  
+• DOM observation  
+• link processing  
+• form parameter propagation
 
-### 🏷️ `link.ignoreClasses`
+This modular design improves maintainability, testability, and extensibility.
 
-Prevents links with certain CSS classes from being tracked.
+Learn more:
 
-```js
-link: {
-  ignoreClasses: ["no-track", "load-more", "page-numbers", "filter-button"],
-}
-```
+👉 [./docs/architecture/](./docs/architecture/)
 
 ---
 
-### 🔗 `link.ignoreProtocols`
+## 🧩 Configuration
 
-Skips links that use specific protocols (useful to avoid tracking file, email, or JS links).
+ParamTracker provides a flexible configuration system for controlling how parameters propagate across links and forms.
 
-```js
-link: {
-  ignoreProtocols: ["mailto:", "tel:", "file:", "javascript:"],
-}
-```
+Below is a **quick overview of the available options**.
 
----
+| Nest | Option           | Type     | Description                                        |
+| ---- | ---------------- | -------- | -------------------------------------------------- |
+| form | acceptFormIds    | string[] | Forms that should receive parameters automatically |
+| link | acceptOrigins    | string[] | Allowed domains for propagation                    |
+| link | ignorePathnames  | string[] | Pathnames excluded from tracking                   |
+| link | ignoreClasses    | string[] | CSS classes that disable tracking                  |
+| link | ignoreProtocols  | string[] | Protocols that should not be modified              |
+| link | manageAttributes | string[] | Attributes inspected for filtering                 |
+| link | ignoreAttrValues | string[] | Attribute values that trigger ignore               |
+| link | includeParams    | string[] | Parameters to preserve and propagate               |
+| link | excludeParams    | string[] | Parameters removed from URLs                       |
 
-### ⚙️ `link.manageAttributes` + `link.ignoreAttrValues`
+ParamTracker performs a deep merge between the internal default configuration and the user-provided configuration.
 
-These options work **together** to ignore links containing specific values in certain attributes.
+This means:
 
-```js
-link: {
-  manageAttributes: ["role", "data-custom"];
-  ignoreAttrValues: ["button", "dropdown", "tab", "modal"];
-}
-```
+• Default values are always preserved  
+• Only the properties you specify are merged into the configuration  
+• Unspecified options continue using the default values
 
-➡️ In this example, any link whose `role` or `data-custom` contains `button`, `dropdownp`, `tab`, or `modal` will be ignored.
-
----
-
-### 🎯 `link.includeParams`
-
-Defines which URL parameters should always be propagated or preserved.
-
-```js
-link: {
-  includeParams: ["custom_param"],
-}
-```
-
-- Note: UTMS parameters are already included by default.
+👉 Full configuration documentation including default values:
+See [./docs/configuration/](./docs/configuration/)
 
 ---
 
-### 🧹 `link.excludeParams`
+### Link Filtering Rules
 
-Removes unwanted parameters from URLs before propagation.
+Before modifying links, ParamTracker applies several filtering rules to ensure safe behavior.
 
-```js
-link: {
-  excludeParams: ["s", "type", "category"],
-}
-```
+These rules include:
+
+- File URL detection (downloads and media files)
+- Protocol filtering (`ignoreProtocols`)
+- CSS class filtering (`ignoreClasses`)
+- Attribute filtering (`manageAttributes` + `ignoreAttrValues`)
+- Origin validation (`acceptOrigins`)
+- Pathname filtering (`ignorePathnames`)
+
+For a complete explanation of how links are evaluated, see:
+
+👉 [`./docs/link-filtering/`](./docs/link-filtering/)
 
 ---
 
@@ -324,28 +300,6 @@ link: {
 ParamTracker is designed to be extensible and will support advanced configuration patterns such as presets and plugins for framework-specific behavior.
 
 Stay tuned for upcoming releases.
-
----
-
-## 🧪 Scripts úteis
-
-- Lint:
-
-```bash
-npm run lint
-```
-
-- Lint with automatic correction:
-
-```bash
-npm run lint:fix
-```
-
-- Build library:
-
-```bash
-npm run build
-```
 
 ---
 
