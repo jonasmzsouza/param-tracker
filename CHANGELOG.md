@@ -5,6 +5,12 @@ The format follows the conventions of Conventional Commits(https://www.conventio
 
 ---
 
+## 5.0.1
+
+### 📚 Documentation
+
+- Expand project documentation with Jekyll-based GitHub Pages structure ([#31](https://github.com/jonasmzsouza/param-tracker/pull/31))
+
 ## 5.0.0
 
 ### 💥 Breaking Changes
