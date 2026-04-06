@@ -1,5 +1,7 @@
 ---
 title: Architecture
+nav_order: 1
+layout: docs
 ---
 
 # ParamTracker Architecture
@@ -317,7 +319,7 @@ Filtering rules include:
 - attribute filtering
 - origin validation
 
-See: [docs/link-filtering.md](docs/link-filtering.md)
+See: [Link Filtering](../link-filtering/)
 
 for detailed behavior.
 
@@ -454,5 +456,5 @@ This structure makes the library:
 
 # Related Documentation
 
-- [configuration.md](configuration.md)
-- [link-filtering.md](link-filtering.md)
+- [configuration](../configuration/)
+- [link-filtering](../link-filtering/)

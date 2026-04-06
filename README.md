@@ -241,7 +241,7 @@ This modular design improves maintainability, testability, and extensibility.
 
 Learn more:
 
-👉 [docs/architecture.md](docs/architecture.md)
+👉 [./docs/architecture/](./docs/architecture/)
 
 ---
 
@@ -272,7 +272,7 @@ This means:
 • Unspecified options continue using the default values
 
 👉 Full configuration documentation including default values:
-See [docs/configuration.md](docs/configuration.md)
+See [./docs/configuration/](./docs/configuration/)
 
 ---
 
@@ -291,7 +291,7 @@ These rules include:
 
 For a complete explanation of how links are evaluated, see:
 
-👉 [`docs/link-filtering.md`](docs/link-filtering.md)
+👉 [`./docs/link-filtering/`](./docs/link-filtering/)
 
 ---
 

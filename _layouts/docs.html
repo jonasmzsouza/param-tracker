@@ -1,0 +1,14 @@
+---
+layout: default
+---
+
+{% include top-nav.html %}
+
+<div class="docs-layout">
+  <div class="docs-sidebar">{% include sidebar.html %}</div>
+
+  <div class="docs-content">{{ content | markdownify }}</div>
+</div>
+
+<script src="{{ '/assets/js/search.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/anchors.js' | relative_url }}"></script>

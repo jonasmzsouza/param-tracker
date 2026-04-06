@@ -1,5 +1,7 @@
 ---
 title: Configuration
+nav_order: 2
+layout: docs
 ---
 
 # ParamTracker Configuration
@@ -14,9 +16,9 @@ ParamTracker performs a **deep merge** between the internal default configuratio
 
 This means:
 
-• Default values are always preserved  
-• Only the properties explicitly provided by the user are merged into the configuration  
-• Any option not specified continues using the default value
+- Default values are always preserved
+- Only the properties explicitly provided by the user are merged into the configuration
+- Any option not specified continues using the default value
 
 Example:
 
@@ -57,44 +59,36 @@ ParamTracker uses the following defaults:
 ```javascript
 {
   form: {
-    acceptFormIds: []
+    acceptFormIds: [],
   },
-
   link: {
     acceptOrigins: [window.location.hostname.toLowerCase()],
-
     ignorePathnames: [],
-
     ignoreClasses: [],
-
     ignoreProtocols: [
-      "mailto:",
-      "tel:",
-      "sms:",
-      "file:",
-      "blob:",
-      "data:",
-      "ftp:",
-      "ftps:",
-      "javascript:"
+      'mailto:',
+      'tel:',
+      'sms:',
+      'file:',
+      'blob:',
+      'data:',
+      'ftp:',
+      'ftps:',
+      'javascript:',
     ],
-
     ignoreAttrValues: [],
-
     manageAttributes: [],
-
     includeParams: [
-      "utm_source",
-      "utm_medium",
-      "utm_campaign",
-      "utm_id",
-      "utm_term",
-      "utm_content"
+      'utm_source',
+      'utm_medium',
+      'utm_campaign',
+      'utm_id',
+      'utm_term',
+      'utm_content',
     ],
-
-    excludeParams: []
-  }
-}
+    excludeParams: [],
+  },
+};
 ```
 
 ---
@@ -320,9 +314,8 @@ In this case, **all other configuration options remain unchanged** and continue 
 
 • Link filtering behavior is documented here:
 
-👉 [`link-filtering.md`](link-filtering.md)
+👉 [`link-filtering`](../link-filtering/)
 
 ---
 
-For a quick overview of the configuration options, see the
-**Configuration section in the README.md**.
+For a quick overview of the configuration options, see the **Configuration section in the README.md**.

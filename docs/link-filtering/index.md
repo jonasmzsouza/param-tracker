@@ -1,5 +1,7 @@
 ---
 title: Link Filtering
+nav_order: 3
+layout: docs
 ---
 
 # Link Filtering Rules
@@ -181,5 +183,5 @@ Only links that pass all filters will be modified.
 
 For configuration details, see:
 
-- 👉 [`configuration.md`](`configuration.md`)
+- 👉 [`configuration`](../configuration/)
 - The **Configuration** section in the README.

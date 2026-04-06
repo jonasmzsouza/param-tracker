@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   traefik:
     image: traefik:v2.10
@@ -17,8 +15,31 @@ services:
   tracker:
     build: .
     labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.tracker.rule=Host(`tracker.local`)'
-      - 'traefik.http.routers.tracker.entrypoints=web'
-      - 'traefik.http.services.tracker.loadbalancer.server.port=80'
+      - "traefik.enable=true"
+      # domínio principal
+      - "traefik.http.routers.tracker.rule=Host(`tracker.local`)"
+      - "traefik.http.routers.tracker.entrypoints=web"
+      - "traefik.http.services.tracker.loadbalancer.server.port=80"
+    restart: unless-stopped
+
+  docs:
+    image: jekyll/jekyll:4.2.2
+    working_dir: /srv/jekyll
+    command: >
+      bash -c "
+      bundle install &&
+      bundle exec jekyll serve
+      --config _config.yml,_config.dev.yml
+      --host 0.0.0.0
+      --port 4000
+      --livereload
+      --watch
+      "
+    volumes:
+      - .:/srv/jekyll
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.docs.rule=Host(`tracker.local`) && PathPrefix(`/docs`)"
+      - "traefik.http.routers.docs.entrypoints=web"
+      - "traefik.http.services.docs.loadbalancer.server.port=4000"
     restart: unless-stopped

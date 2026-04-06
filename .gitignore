@@ -24,3 +24,9 @@ coverage/
 # Ambiente
 .env
 .env.local
+
+# Jekill
+_site/
+.jekyll-cache/
+.jekyll-metadata
+Gemfile.lock

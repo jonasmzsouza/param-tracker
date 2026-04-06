@@ -64,6 +64,6 @@ export default [
   },
   prettierConfig,
   {
-    ignores: ['dist/**/*.js'],
+    ignores: ['dist/**/*.js', 'assets/**/*.js'],
   },
 ];
